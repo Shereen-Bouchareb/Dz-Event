@@ -1,8 +1,10 @@
-//Gestion des routes pour le profil
+//Gestion des routes pour le profilr
 const express = require('express');
 const router = express.Router();
 const profileController = require('../controllers/profileController');
 const upload = require('../middlewares/uploadMiddleware'); // Assurez-vous de configurer 'multer' dans ce fichier
+
+
 
 // Récupérer le profil du prestataire
 router.get('/profile/:id', profileController.getProfile);

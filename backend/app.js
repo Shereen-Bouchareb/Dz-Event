@@ -17,8 +17,10 @@ const galleryRoutes = require('./routes/galleryRoutes');
 const serviceRoutes = require('./routes/serviceRoutes');
 const checklistTaskRoutes = require('./routes/checklistTaskRoutes'); // Routes de la checklist
 const signupuserRoutes = require('./routes/signupuserRoutes');
+const prestataireRoutes = require('./routes/prestataireRoutes');
 
 
+app.use('/prestataire',prestataireRoutes);
 app.use('/profile', profileRoutes); // Routes pour les profils
 app.use('/signuppres', signuppresRoutes);       // Routes pour l'authentification
 app.use('/comments', commentsRoutes); // Routes pour les messages

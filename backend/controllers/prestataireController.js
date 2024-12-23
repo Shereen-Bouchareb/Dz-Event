@@ -26,6 +26,13 @@ function getPrestataireById(req, res) {
   });
 }
 
+
+function getPendingReservations(req, res){
+const prestataireid = req.params.i
+
+}
+
+
 // Controller function to create a new user
 function createPrestataire(req, res) {
   const userData = req.body;
