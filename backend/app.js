@@ -18,7 +18,7 @@ const serviceRoutes = require('./routes/serviceRoutes');
 const checklistTaskRoutes = require('./routes/checklistTaskRoutes'); // Routes de la checklist
 const signupuserRoutes = require('./routes/signupuserRoutes');
 const prestataireRoutes = require('./routes/prestataireRoutes');
-
+const ratingRoutes = require('./routes/ratingRoutes');
 
 app.use('/prestataire',prestataireRoutes);
 app.use('/profile', profileRoutes); // Routes pour les profils
@@ -29,3 +29,4 @@ app.use('/gallery', galleryRoutes);
 app.use('/services', serviceRoutes);
 app.use('/checklistTask', checklistTaskRoutes); // Routes pour la gestion des checklists
 app.use('/signupuser', signupuserRoutes);
+app.use('/rating', ratingRoutes);
