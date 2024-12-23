@@ -3,8 +3,8 @@ const prestataireController = require('../controllers/prestataireController');
 const router = express.Router();
 
 // Define routes
-router.get('/prestataires', prestataireController.getAllPrestataires);
-router.get('/prestataires/:id', prestataireController.getPrestataireById);
+router.get('/', prestataireController.getAllPrestataires);
+router.get('/:id', prestataireController.getPrestataireById);
 // les autres route
 
 
