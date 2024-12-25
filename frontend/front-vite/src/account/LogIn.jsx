@@ -9,6 +9,8 @@ const LogIn = () => {
   const [rememberMe, setRememberMe] = useState(false);
   const [errEmail, setErrEmail] = useState("");
   const [errPassword, setErrPassword] = useState("");
+  const [userRole, setUserRole] = useState("");
+  const [errUserRole, setErrUserRole] = useState("");
 
   const toggleRememberMe = () => {
     setRememberMe(!rememberMe);
@@ -30,6 +32,11 @@ const LogIn = () => {
       .match(/^[A-Z0-9._%+-]+@[A-Z0-9._%+-]+\.[A-Z]{2,4}$/i);
   };
 
+  const handelUserRoleChange = (e) => {
+    setUserRole(e.target.value);
+    setErrUserRole("");
+  };
+
   const handelSubmit = (e) => {
     e.preventDefault();
 
@@ -45,7 +52,11 @@ const LogIn = () => {
       setErrPassword("please enter your password");
     }
 
-    if (email && emailValidation(email) && password) {
+    if (!userRole) {
+      setErrUserRole("required");
+    }
+
+    if (email && emailValidation(email) && password && userRole) {
       console.log("logging with email:", email);
       console.log("logging with password:", password);
       console.log("Remember me:", rememberMe);
@@ -72,7 +83,37 @@ const LogIn = () => {
           <h1 className="text-main-brown text-4xl leading-[72px] font-bold mb-[20px]">
             Log In
           </h1>
-          <div className="flex justify-center  flex-col m-[20px]">
+          <div className="flex flex-col  w-[400px] relative ">
+            <div className="flex items-center">
+            <label
+              htmlFor="typeUser"
+              className="  text-[15px] font-medium leading-[30px] mr-3"
+            >
+              Your Role
+            </label>
+            {errUserRole && (
+              <p className="text-red-500 text-xs">{errUserRole}</p>
+            )}
+            </div>
+            
+
+            <select
+              id="typeUser"
+              value={userRole}
+              onChange={handelUserRoleChange}
+              //   className="w-[400px] h-[50px] p-[20px] gap-2 rounded-[5px] focus:outline-none shadow-[inset_0px_0px_4px_0px_rgba(0,0,0,0.25)]"
+              className=" relative w-[210px] h-[50px] p-[10px]   border rounded-md focus:outline-none  shadow-[inset_0px_0px_4px_0px_rgba(0,0,0,0.25)] "
+            >
+              {/* appearance-none */}
+              <option value="" disabled></option>
+              <option value="Client">Client</option>
+              <option value="Prestataire">Prestataire</option>
+            </select>
+            {/* <span className="absolute w-4 h-3 left-[165px] top-[60%] transform -translate-y-1/2 text-black ">
+            <RiArrowDropDownLine size={30} />
+  </span> */}
+          </div>
+          <div className="flex justify-center  flex-col ">
             <div className="flex items-center">
               <label
                 htmlFor="email"
@@ -138,14 +179,12 @@ const LogIn = () => {
           </div>
 
           <div className="flex   flex-col">
-            
-              <button
-                type="submit"
-                className=" bg-main-brown text-white text-center font-bold w-[400px] h-[50px]  p-[10px] mt-[30px] gap-2 rounded-[5px] focus:outline-none shadow-[inset_0px_0px_4px_0px_rgba(0,0,0,0.25)]"
-              >
-                LogIn
-              </button>
-            
+            <button
+              type="submit"
+              className=" bg-main-brown text-white text-center font-bold w-[400px] h-[50px]  p-[10px] mt-[30px] gap-2 rounded-[5px] focus:outline-none shadow-[inset_0px_0px_4px_0px_rgba(0,0,0,0.25)]"
+            >
+              LogIn
+            </button>
 
             <Link
               to="/SignUp"
