@@ -1,9 +1,15 @@
+
 const express = require('express');
-const commentsController = require('../controllers/commentsController');
-
 const router = express.Router();
+const commentsController = require('../controllers/commentsController'); 
+const authenticateToken = require('../middleware/authenticateToken');
+const authorizeRole = require('../middleware/authorizeRole');
 
-// Route pour récupérer les avis d'un prestataire
-router.get('/:prestataire_id', commentsController.getPrestataireComments);
+// prestataire Routes
 
-module.exports = router;
+router.get('/', authenticateToken, authorizeRole(['prestataire']), commentsController.getPrestataireComments);
+
+// client routes 
+
+
+module.exports = router; 

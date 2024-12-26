@@ -1,18 +1,19 @@
-//Gestion des routes pour le profilr
+
 const express = require('express');
 const router = express.Router();
 const profileController = require('../controllers/profileController');
-const upload = require('../middlewares/uploadMiddleware'); // Assurez-vous de configurer 'multer' dans ce fichier
+const authenticateToken = require('../middleware/authenticateToken');
+const authorizeRole = require('../middleware/authorizeRole');
+
+// prestataire Routes
+
+router.get('/', authenticateToken, authorizeRole(['prestataire']), profileController.getPrestatairePictures);
+router.post('/', authenticateToken, authorizeRole(['prestataire']), profileController.addPrestatairePicture);
+router.put('/', authenticateToken, authorizeRole(['prestataire']), profileController.editPrestataireProfile);
 
 
 
-// Récupérer le profil du prestataire
-router.get('/profile/:id', profileController.getProfile);
+// client routes 
 
-// Mettre à jour le profil (nom, wilaya, bio, description)
-router.post('/profile/:id', profileController.updateProfile);
 
-// Mettre à jour la photo de profil
-router.post('/profile/:id/photo', upload.single('profile_pic'), profileController.updateProfilePic);
-
-module.exports = router;
+module.exports = router;  // Exporting the router to be used in app.js

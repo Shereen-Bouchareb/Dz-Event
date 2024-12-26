@@ -1,28 +1,26 @@
 const mysql = require('mysql2');
+
+require('dotenv').config();  // No need to specify path if the .env file is in the root directory.
 require('dotenv').config({ path: '../.env' }); 
 
 
+
 const connection = mysql.createConnection({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
+  //host: process.env.DB_HOST,
+ // user: process.env.DB_USER,
+ // password: process.env.DB_PASSWORD,
+ // database: process.env.DB_NAME,
+ 
 });
 
 
 const migrations = [
- 
-  // Example migration: create orders table 
 
-    `DROP TABLE IF EXISTS availability`,
-    `CREATE TABLE Availability (
-        Dispo_id INT AUTO_INCREMENT PRIMARY KEY,
-        date DATE NOT NULL,
-        status ENUM('Available', 'Unavailable') NOT NULL,
-        Prestataire_id INT NOT NULL,
-        FOREIGN KEY (Prestataire_id) REFERENCES Prestataire(Prestataire_id) ON DELETE CASCADE
-    )`,
+  `ALTER TABLE prestataire 
+  ADD COLUMN userBio TEXT`,
+  
 ];
+
 
 async function applyMigrations() {
   try {

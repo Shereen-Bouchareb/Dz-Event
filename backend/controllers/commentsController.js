@@ -1,18 +1,12 @@
-const Comments = require('../models/commentsModel');
+const userQueries = require('../models/commentsModel');
+// TODO : different exported functions 
 
-const commentsController = {
-  getPrestataireComments: (req, res) => {
-    const prestataireId = req.params.prestataire_id;
-
-    Comments.getCommentsByPrestataire(prestataireId, (err, results) => {
-      if (err) {
-        console.error('Erreur lors de la récupération des avis :', err);
-        res.status(500).json({ message: 'Erreur interne du serveur.' });
-      } else {
-        res.status(200).json({ comments: results });
-      }
-    });
-  }
+exports.getPrestataireComments = async (req, res) => {
+    try {
+        const prestataireId = req.params.prestataireId;
+        const comments = await commentsModel.getCommentsByPrestataireId(prestataireId);
+        res.status(200).json(comments);
+    } catch (error) {
+        res.status(500).json({ error: 'Server error', details: error.message });
+    }
 };
-
-module.exports = commentsController;

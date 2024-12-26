@@ -1,17 +1,17 @@
 const express = require('express');
 const router = express.Router();
 const serviceController = require('../controllers/serviceController');
+const authenticateToken = require('../middleware/authenticateToken');
+const authorizeRole = require('../middleware/authorizeRole');
 
-// Ajouter un service
-router.post('/services', serviceController.addService);
+// prestataire Routes
 
-// Récupérer les services d'un prestataire
-router.get('/services/:prestataireId', serviceController.getServices);
 
-// Mettre à jour un service
-router.put('/services/:id', serviceController.updateService);
+// client routes 
+router.get('/', authenticateToken, authorizeRole(['prestataire']), serviceController.getPrestataireServices);
+router.post('/', authenticateToken, authorizeRole(['prestataire']), serviceController.addPrestataireService);
+router.delete('/', authenticateToken, authorizeRole(['prestataire']), serviceController.deletePrestataireService);
 
-// Supprimer un service
-router.delete('/services/:id', serviceController.deleteService);
+
 
 module.exports = router;
