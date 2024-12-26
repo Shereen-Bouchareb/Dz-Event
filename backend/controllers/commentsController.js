@@ -1,12 +1,17 @@
-const userQueries = require('../models/commentsModel');
-// TODO : different exported functions 
+const Comments = require('../models/commentsModel');
 
-exports.getPrestataireComments = async (req, res) => {
-    try {
-        const prestataireId = req.params.prestataireId;
-        const comments = await commentsModel.getCommentsByPrestataireId(prestataireId);
-        res.status(200).json(comments);
-    } catch (error) {
-        res.status(500).json({ error: 'Server error', details: error.message });
-    }
-};
+
+  exports.getPrestataireComments= (req, res) => { 
+    const prestataireId = req.user.id;    // Utilisation de l'ID du prestataire dans le token
+
+    Comments.getCommentsByPrestataire(prestataireId, (err, results) => {
+      if (err) {
+        console.error('Erreur lors de la récupération des avis :', err);
+        res.status(500).json({ message: 'Erreur interne du serveur.' });
+      } else {
+        res.status(200).json({ comments: results });
+      }
+    });
+  }
+
+module.exports = commentsController;

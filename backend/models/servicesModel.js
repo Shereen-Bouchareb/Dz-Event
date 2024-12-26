@@ -1,7 +1,7 @@
 const db = require('../config/db');
 
 // Ajouter un service
-const addService = async (name, description, price, prestataireId) => {
+const addPrestataireService = async (name, description, price, prestataireId) => {
   const query = `
     INSERT INTO services (service_name, ser_description, price, prestataire_id)
     VALUES (?, ?, ?, ?)
@@ -11,7 +11,7 @@ const addService = async (name, description, price, prestataireId) => {
 };
 
 // Récupérer les services d'un prestataire
-const getServicesByPrestataire = async (prestataireId) => {
+const getPrestataireServices = async (prestataireId) => {
   const query = `
     SELECT service_id, service_name, ser_description, price
     FROM services
@@ -21,19 +21,9 @@ const getServicesByPrestataire = async (prestataireId) => {
   return rows;
 };
 
-// Mettre à jour un service
-const updateService = async (id, name, description, price) => {
-  const query = `
-    UPDATE services
-    SET service_name = ?, ser_description = ?, price = ?
-    WHERE service_id = ?
-  `;
-  const [result] = await db.execute(query, [name, description, price, id]);
-  return result;
-};
 
 // Supprimer un service
-const deleteService = async (id) => {
+const deletePrestataireService = async (id) => {
   const query = `
     DELETE FROM services
     WHERE service_id = ?
@@ -43,8 +33,7 @@ const deleteService = async (id) => {
 };
 
 module.exports = {
-  addService,
-  getServicesByPrestataire,
-  updateService,
-  deleteService,
+    getPrestataireServices,
+    addPrestataireService,
+    deletePrestataireService
 };

@@ -12,7 +12,6 @@ router.post('/', authenticateToken, authorizeRole(['prestataire']), profileContr
 router.put('/', authenticateToken, authorizeRole(['prestataire']), profileController.editPrestataireProfile);
 
 
-
 // client routes 
 
 

@@ -21,10 +21,4 @@ router.get('/:prestataireId/availability', authenticateToken, authorizeRole(['cl
 router.get('/:prestataireId/services/:serviceId/reservation-formulaire', authenticateToken, authorizeRole(['client']), prestataireController.getReservationFormByClient);
 router.post('/:prestataireId/services/:serviceId/reservation-formulaire', authenticateToken, authorizeRole(['client']), prestataireController.submitReservationByClient);
 
-
-
-
-
-
-
 module.exports = router;  
