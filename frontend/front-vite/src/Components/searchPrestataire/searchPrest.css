@@ -1,0 +1,29 @@
+.theContainer{
+    width:770px;
+    height:55px ;
+    background-color:#D08E70 ;
+    border-radius:30px;
+    display:flex;
+    justify-Content:space-around;
+    align-Items: center;
+    flex-Basis:30px;
+    margin-top: 10px;
+    margin-bottom: 50px;
+   
+
+}
+.choisesContainer{
+    background-Color:#F0E5CF ;
+    width:105px ;
+    height:34px ;
+    border-Radius:20px ;
+    display:flex;
+    justify-Content:center ;
+    align-Items:center;
+    cursor:pointer
+}
+.iconCss{
+    color: #D08E70;
+    margin-top: 5px;
+    margin-left: 5px;
+}

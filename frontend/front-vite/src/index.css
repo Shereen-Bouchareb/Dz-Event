@@ -1,3 +1,43 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
+*{
+    margin: 0; /*because by default the browsers give a margin for the body*/
+    padding: 0 , 10px , 0 , 10px;
+    box-sizing: border-box; /*if we set the width 200px and padding 20px and border 10 px so the width still 200px the padding and the border are included in the width*/
+    font-family: "Outfit", sans-serif;
+}
+body{
+    background: #f5f5f5;
+}
+a{
+    text-decoration: none;
+    color: inherit;
+    line-height: 1;
+    cursor: pointer;
+}
+.container{ /*to add a space in left and right of all the page*/
+    padding-left: 10%;
+    padding-right: 10%;
+}
+.btn{
+background: #fff;
+color: #212121 ;
+padding: 14px 25px;
+font-size: 16px;
+border-radius: 30px;
+cursor: pointer;
+border: 0;
+outline: 0; 
+display: inline-flex;
+align-items: center;
+justify-content: center;
+}
+
+.btn img {
+    width: 20px;
+    margin-left: 10px;
+}
+.btn.dark-btn{
+    background: #212EA0;
+    color: #fff;
+}
+

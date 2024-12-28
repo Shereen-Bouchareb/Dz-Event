@@ -1,0 +1,30 @@
+.detail{
+   
+    background-color: #FFFFFF;
+    height: 46px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #75574A;
+    font-size: 20px;
+    border-style: none;
+    cursor: pointer;
+    
+
+}
+
+.clickedButton{
+    
+    background-color: #D08E70;
+    height: 46px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #F0E5CF;
+    font-size: 20px;
+    border-style: none;
+    cursor: pointer;
+}
+

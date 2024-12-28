@@ -1,0 +1,80 @@
+.profileContainer{
+    
+        display: flex;
+       margin-top: 20px;
+        width: 100%;
+        height: 530px;
+        justify-content: space-around;
+        align-items: center;
+        margin-bottom: 80px;
+    
+}
+.imgContainer{
+    width: 40%;
+  height: 100%;
+
+}
+.imgContainer img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensures the image covers the entire div */
+}
+.profileInfoContainer{
+    display: block;
+    width: 35%;
+}
+.profileContainer h2{
+    color: #D08E70;
+    font-size: 24px;
+    margin-bottom: 5%;
+}
+.description{
+    color: #A6725A;
+    font-size: 14px;
+    margin-bottom: 5%;
+}
+.theRole{
+    width: 112px;
+    height: 30px;
+    border-radius: 10px;
+    background-color: #D08E70;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 5%;
+}
+.devisButton{
+    width: 100%;
+    height: 45px;
+    background-color: #D08E70;
+    color: #F7F8FA;
+    border-style: none;
+    margin-bottom: 2%;
+    cursor: pointer;
+}
+.commentButton{
+    width: 100%;
+    height: 45px;
+    background-color: #F0E5CF;
+    color: #D08E70;
+    border-style: none;
+    cursor: pointer;
+}
+.emailEnter{
+    color: #A6725A;
+    font-size: 16px;
+    transform: translate(-27% , 0%);
+}
+.envoyerButton {
+    width: 20%;
+    height: 45px;
+    border-radius: 20px;
+    background-color: #D08E70;
+    color: #F0E5CF;
+    border-style: none;
+    font-size: 18px;
+    margin-top: 20px; /* Added margin-top */
+    transform: translate(190%,0);
+    cursor: pointer;
+    
+}
