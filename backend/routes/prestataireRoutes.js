@@ -15,10 +15,10 @@ router.get('/', authenticateToken, authorizeRole(['client']), prestataireControl
 router.get('/:prestataireId', authenticateToken, authorizeRole(['client']), prestataireController.getPrestataireById);
 router.get('/:prestataireId/comments', authenticateToken, authorizeRole(['client']), prestataireController.getPrestataireCommentsByClient);
 router.post('/:prestataireId/comments', authenticateToken, authorizeRole(['client']), prestataireController.submitComment);
-router.get('/:prestataireId/services', authenticateToken, authorizeRole(['client']), prestataireController.getPrestataireServicesByClient);
+router.get('/:prestataireId/services', authenticateToken, authorizeRole(['client']), prestataireController.getServicesByPrestataire);
 router.get('/:prestataireId/Gallery', authenticateToken, authorizeRole(['client']), prestataireController.getPrestataireGalleryByClient);
-router.get('/:prestataireId/availability', authenticateToken, authorizeRole(['client']), prestataireController.getPrestataireAvailabilityByClient);
-router.get('/:prestataireId/services/:serviceId/reservation-formulaire', authenticateToken, authorizeRole(['client']), prestataireController.getReservationFormByClient);
-router.post('/:prestataireId/services/:serviceId/reservation-formulaire', authenticateToken, authorizeRole(['client']), prestataireController.submitReservationByClient);
+//router.get('/:prestataireId/availability', authenticateToken, authorizeRole(['client']), prestataireController.getPrestataireAvailabilityByClient);
+//router.get('/:prestataireId/services/:serviceId/reservation-formulaire', authenticateToken, authorizeRole(['client']), prestataireController.getReservationFormByClient);
+//router.post('/:prestataireId/services/:serviceId/reservation-formulaire', authenticateToken, authorizeRole(['client']), prestataireController.submitReservationByClient);
 
 module.exports = router;  

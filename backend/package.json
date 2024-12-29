@@ -4,12 +4,11 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha --recursive tests/unit/**/*.test.js",
-    "start": "nodemon server.js"
+    "start": "node app.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.3",
@@ -28,5 +27,9 @@
     "nodemon": "^3.1.9",
     "sinon": "^19.0.2",
     "supertest": "^7.0.0"
-  }
+  },
+  "directories": {
+    "test": "tests"
+  },
+  "description": ""
 }

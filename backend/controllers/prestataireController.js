@@ -1,9 +1,9 @@
-const Prestataire = require('../models/prestataireModel');
+const prestataireController = require('../models/prestataireModel');
 
 // Récupérer tous les prestataires
-exports.getAllPrestataire= async (req, res) => {
+exports.getAllPrestataire = async (_, res) => {
     try {
-        const prestataires = await Prestataire.getAllPrestataire(); // Récupérer tous les prestataires
+        const prestataires = await prestataireController.getAllPrestataire(); // Récupérer tous les prestataires
         res.status(200).json({ prestataires }); // Retourne les prestataires
     } catch (err) {
         console.error('Erreur lors de la récupération des prestataires :', err.message);
@@ -11,12 +11,13 @@ exports.getAllPrestataire= async (req, res) => {
     }
 };
 
+
 // Récupérer un prestataire par ID (utilisé dans l'URL)
 exports.getPrestataireById = async (req, res) => {
     const prestataireId = req.params.prestataireId; // Récupérer l'ID du prestataire depuis les paramètres
 
     try {
-        const prestataire = await Prestataire.getPrestataireById(prestataireId); // Appel au modèle
+        const prestataire = await prestataireController.getPrestataireById(prestataireId); // Appel au modèle
 
         if (!prestataire) {
             return res.status(404).json({ message: 'Prestataire non trouvé.' });
@@ -34,7 +35,7 @@ exports.getPrestataireCommentsByClient = async (req, res) => {
     const prestataireId = req.params.prestataireId; // ID du prestataire depuis les paramètres
 
     try {
-        const comments = await Prestataire.getPrestataireCommentsByClient(prestataireId);
+        const comments = await prestataireController.getPrestataireCommentsByClient(prestataireId);
         res.status(200).json({ comments });
     } catch (err) {
         console.error('Erreur lors de la récupération des commentaires :', err.message);
@@ -53,7 +54,7 @@ exports.submitComment = async (req, res) => {
     }
 
     try {
-        const result = await Prestataire.submitComment(prestataireId, rating, content, clientId);
+        const result = await prestataireController.submitComment(prestataireId, rating, content, clientId);
         res.status(201).json({ message: 'Commentaire ajouté avec succès.', commentId: result.insertId });
     } catch (err) {
         console.error('Erreur lors de l\'ajout du commentaire :', err.message);
@@ -71,7 +72,7 @@ exports.updateRating = async (req, res) => {
     }
 
     try {
-        const result = await Prestataire.updateRating(commentId, rating);
+        const result = await prestataireController.updateRating(commentId, rating);
         if (result.affectedRows === 0) {
             return res.status(404).json({ message: "Commentaire non trouvé." });
         }
@@ -84,9 +85,9 @@ exports.updateRating = async (req, res) => {
 };
 
 // Récupérer le rating moyen de tous les prestataires
-exports.getAverageRating = async (req, res) => {
+exports.getAverageRating = async (_, res) => {
     try {
-        const averageRating = await Prestataire.getAverageRating();
+        const averageRating = await prestataireController.getAverageRating();
         return res.status(200).json({ averageRating });
     } catch (error) {
         console.error("Erreur :", error.message);
@@ -99,7 +100,7 @@ exports.getServicesByPrestataire = async (req, res) => {
     const prestataireId = req.params.prestataireId; // ID du prestataire depuis les paramètres
 
     try {
-        const services = await Prestataire.getPrestataireServicesByClient(prestataireId);
+        const services = await prestataireController.getPrestataireServicesByClient(prestataireId);
         res.status(200).json({ services });
     } catch (error) {
         console.error("Erreur lors de la récupération des services :", error.message);
@@ -112,7 +113,7 @@ exports.getPrestataireGalleryByClient = async (req, res) => {
     const prestataireId = req.params.prestataireId; // ID du prestataire depuis les paramètres
 
     try {
-        const photos = await Prestataire.getPrestataireGalleryByClient(prestataireId);
+        const photos = await prestataireController.getPrestataireGalleryByClient(prestataireId);
         res.status(200).json({ photos });
     } catch (error) {
         console.error('Erreur lors de la récupération des photos :', error);
@@ -120,7 +121,14 @@ exports.getPrestataireGalleryByClient = async (req, res) => {
     }
 };
 
-
+// Exporter directement les fonctions
 module.exports = {
-    prestataireController,
+    getAllPrestataire,
+    getPrestataireById,
+    getPrestataireCommentsByClient,
+    submitComment,
+    updateRating,
+    getAverageRating,
+    getServicesByPrestataire,
+    getPrestataireGalleryByClient
 };

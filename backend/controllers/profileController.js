@@ -3,8 +3,11 @@ const profile = require('../models/profileModel');
   // Ajouter une photo
   exports.addPrestatairePicture= async (req, res) => {
     const { prestataire_id } = req.user.id;
-    const photoUrl = req.file ? `/uploads/${req.file.filename}` : null;
 
+    // // Construction de l'URL de la photo si un fichier est téléchargé
+    const photoUrl = req.file ? `/uploads/${req.file.filename}` : null; //// Chemin basé sur votre configuration Multer.
+
+    // // Vérification si aucune photo n'est téléchargée
     if (!photoUrl) {
       return res.status(400).json({ message: 'Aucune photo téléchargée.' });
     }
