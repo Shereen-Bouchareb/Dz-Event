@@ -1,12 +1,14 @@
 import React from 'react'
 import { FaStar } from "react-icons/fa";
 import { MdPlace } from "react-icons/md";
-import Img from './photographer.jpg'
+import Img from './photographer.jpg';
+import { Link } from 'react-router-dom';
 
 export default function ProfileCards({id , role , bio , profilePic , wilaya , commune , prestName , rating}) {
   return (
     <div>
-      <div style={{display:"block" , width:"279px" , height:"470px" , backgroundColor:"#F0E5CF" , borderRadius:"10px" , cursor:"pointer"}}>
+    <Link to='/DetailedProfile'>
+      <div style={{display:"block" , width:"279px" , height:"470px" , backgroundColor:"#F0E5CF" , borderRadius:"10px" , cursor:"pointer" }}>
         <div>
           <img src={profilePic} style={{width:"280px" , height:"273px",objectFit:"cover" }}/>
         </div>
@@ -27,6 +29,7 @@ export default function ProfileCards({id , role , bio , profilePic , wilaya , co
         </div>
         </div>
       </div>
+      </Link>
     </div>
   )
 }

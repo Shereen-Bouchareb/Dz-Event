@@ -32,7 +32,7 @@ function App() {
       {/* Wrap the entire routing part with Router */}
       
         <Routes>
-          <Route path="/" element={<DetailedProfile />} />
+          <Route path="/" element={<WelcomePage />} />
           <Route path="/Login" element={<LogIn />} />
           <Route path="/SignUp" element={<SignUp/>} />
           <Route path="/SignUpPrestataire" element={<SignUpPrestataire />} />
@@ -43,6 +43,7 @@ function App() {
           <Route path="/votreService/AddService" element={<AddService />} />
           <Route path="/CheckList" element={<CheckList />} />
           <Route path="/SearchPage" element={<SearchPage />} />
+          <Route path="/DetailedProfile" element={<DetailedProfile/>} />
         </Routes>
       
     </div>
