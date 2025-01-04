@@ -73,6 +73,8 @@ web_modules/
 .yarn-integrity
 
 # dotenv environment variable files
+/backend/.env
+/backend/generateSecretKey.js
 .env
 .env.development.local
 .env.test.local
