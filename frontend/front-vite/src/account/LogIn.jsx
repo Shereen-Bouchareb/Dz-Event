@@ -88,6 +88,7 @@ const LogIn = () => {
             <label
               htmlFor="typeUser"
               className="  text-[15px] font-medium leading-[30px] mr-3"
+              
             >
               Your Role
             </label>
@@ -102,10 +103,12 @@ const LogIn = () => {
               value={userRole}
               onChange={handelUserRoleChange}
               //   className="w-[400px] h-[50px] p-[20px] gap-2 rounded-[5px] focus:outline-none shadow-[inset_0px_0px_4px_0px_rgba(0,0,0,0.25)]"
-              className=" relative w-[210px] h-[50px] p-[10px]   border rounded-md focus:outline-none  shadow-[inset_0px_0px_4px_0px_rgba(0,0,0,0.25)] "
+              className=" relative w-[400px] h-[50px] p-[10px]   border rounded-md focus:outline-none  shadow-[inset_0px_0px_4px_0px_rgba(0,0,0,0.25)] "
             >
               {/* appearance-none */}
-              <option value="" disabled></option>
+              <option value="" disabled >
+                <span style={{color:"#9F9F9F"}}>Select your role</span>
+              </option>
               <option value="Client">Client</option>
               <option value="Prestataire">Prestataire</option>
             </select>
@@ -179,12 +182,14 @@ const LogIn = () => {
           </div>
 
           <div className="flex   flex-col">
+          <Link to='/SearchPage'>
             <button
               type="submit"
               className=" bg-main-brown text-white text-center font-bold w-[400px] h-[50px]  p-[10px] mt-[30px] gap-2 rounded-[5px] focus:outline-none shadow-[inset_0px_0px_4px_0px_rgba(0,0,0,0.25)]"
             >
               LogIn
             </button>
+            </Link>
 
             <Link
               to="/SignUp"

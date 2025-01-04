@@ -1,0 +1,50 @@
+.programs{
+    margin: 80px auto ; /*auto left and right*/
+    width: 90%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.program img {
+    width: 100%;
+    border-radius: 10px;
+    display: block;
+    height: 250px;
+}
+
+.program { /*here we use flex-basis to the div program so this div will have the 31% of the lenght parent so that will make a space between the pictures */
+    flex-basis: 31%; /*a method to make equal space between the pictures*/
+    position: relative; /*so i can positioning the absolute caption depending on the program check clickup absolute position*/
+}
+.caption{/*caption is a div thats why we used display flex ..ect for his content to be centered + it cover all the image because we set that left...= 0*/
+    border-radius: 10px;
+    position: absolute;
+    top:0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: rgba(0,15,152,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;/*so that the icon pic and the paragraph be displayed block*/
+    color: #fff;
+    cursor: pointer;
+    opacity: 0;
+    padding-top: 70%;
+    transition: 0.4s;/*to show the transition of the padding bcs any change to the padding-top (or any CSS property) would happen instantly*/
+   
+}
+.caption img{
+    width: 60px;
+    height: 70px;
+    margin-bottom: 10px; /*so that the text bellow the icon will have space above it*/
+    
+}
+
+.program:hover .caption{
+    opacity: 1;
+    padding-top: 0;
+   
+}

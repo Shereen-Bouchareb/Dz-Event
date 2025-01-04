@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import SideBar from "./Components/SideBar";
+import SideBar from "./ComponentsZ/SideBar";
 import { TiThMenu } from "react-icons/ti";
 import { FaRegTrashAlt } from "react-icons/fa";
 

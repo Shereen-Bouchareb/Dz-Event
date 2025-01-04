@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Account from "../assets/Account.png";
+import { Link } from "react-router-dom";
 // import { RiArrowDropDownLine } from "react-icons/ri";
 
 const SignUpPrestataire = () => {
@@ -320,19 +321,22 @@ const SignUpPrestataire = () => {
             />
           </div>
           <div className="flex   flex-col">
+          <Link to='/Profile/EditProfile'>
             <button
               type="submit"
               className=" bg-main-brown text-white text-center font-bold w-[400px] h-[40px]  p-[10px] mt-[10px] gap-2 rounded-[5px] focus:outline-none shadow-[inset_0px_0px_4px_0px_rgba(0,0,0,0.25)]"
             >
               Sign Up
             </button>
-
+            </Link>
+          <Link to='/LogIn'>
             <a
               href=""
               className="text-main-brown text-[12px] font-medium text-center"
             >
               Already have an account?
             </a>
+            </Link>
           </div>
         </form>
       </div>

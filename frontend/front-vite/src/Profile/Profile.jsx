@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
-import SideBar from "../Components/SideBar";
+import SideBar from "../ComponentsZ/SideBar";
 import { TiThMenu } from "react-icons/ti";
 import { FaRegTrashAlt } from "react-icons/fa";
 import anonymeProfile from "../assets/anonymeProfile.png";

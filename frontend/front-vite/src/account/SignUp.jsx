@@ -75,7 +75,9 @@ const SignUp = () => {
               className=" relative w-[210px] h-[50px] p-[10px]   border rounded-md focus:outline-none  shadow-[inset_0px_0px_4px_0px_rgba(0,0,0,0.25)] focus:ring-2 focus:ring-main-brown"
             >
               {/* appearance-none */}
-              <option value="" disabled></option>
+              <option value="" disabled>
+                Select Your Role
+              </option>
               <option value="Client">Client</option>
               <option value="Prestataire">Prestataire</option>
             </select>
@@ -85,12 +87,14 @@ const SignUp = () => {
           </div>
 
           <div className="flex   flex-col">
+          
             <button
               type="submit"
               className=" bg-main-brown text-white text-center font-bold w-[400px] h-[50px]  p-[10px] mt-[30px] gap-2 rounded-[5px] focus:outline-none shadow-[inset_0px_0px_4px_0px_rgba(0,0,0,0.25)]"
             >
               Next
             </button>
+           
 
             <Link
               to="/Login"

@@ -1,0 +1,28 @@
+nav{
+    width: 100%;
+    /*background: #333;*/
+    color: #fff;
+    padding: 4px 0;
+    position: fixed;
+    top:0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 10; /*only works on elements that have a position value other than static ( realtive absolute fixed ) + Elements with a higher z-index value are displayed on top of elements with a lower z-index.*/
+}
+
+.logo{
+    width: 180px;
+}
+nav ul li {
+    display: inline-block;
+    list-style: none;
+    margin: 5px 20px;
+    font-size: 16px;
+    
+}
+.dark-nav{
+    background: #D08E70;
+    transition: 0.4s;
+}

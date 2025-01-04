@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import SideBar from "../Components/SideBar";
+import SideBar from "../ComponentsZ/SideBar";
 import WilayasData from "./Wilayas.json";
 import anonymeProfile from "../assets/anonymeProfile.png";
 import Select from "react-select";
