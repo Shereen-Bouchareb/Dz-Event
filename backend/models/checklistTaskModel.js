@@ -1,7 +1,7 @@
 const db = require('../config/db');
 
 // Ajouter une tâche à la checklist
-const AddPrestataireChecklist = async (taskName, prestataireId) => {
+const AddPrestataireChecklist = async git add .(taskName, prestataireId) => {
   const query = `
     INSERT INTO ChecklistTasks (task_name, Prestataire_id)
     VALUES (?, ?)

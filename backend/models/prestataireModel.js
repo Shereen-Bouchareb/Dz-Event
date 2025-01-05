@@ -4,19 +4,22 @@ const db = require('../config/db');
 const getAllPrestataire = async () => {
     const query = `
         SELECT 
-            Prestataire.Prestataire_id AS id,
-            Prestataire.firstname,
-            Prestataire.familyname,
-            Prestataire.userBio,
-            Prestataire.Job_description,
-            COALESCE(AVG(Commentaire.rating), 0) AS rating
-        FROM Prestataire
-        LEFT JOIN Commentaire ON Prestataire.Prestataire_id = Commentaire.prestataire_id
-        GROUP BY Prestataire.Prestataire_id;
+            p.Prestataire_id AS id,
+            p.firstname,
+            p.familyname,
+            p.userBio,
+            p.Job_description,
+            COALESCE(AVG(c.rating), 0) AS rating
+        FROM Prestataire p
+        LEFT JOIN services s ON s.Prestataire_id = p.Prestataire_id
+        LEFT JOIN reserver r ON r.service_id = s.service_id
+        LEFT JOIN commentaire c ON c.client_id = r.client_id
+        GROUP BY p.Prestataire_id;
     `;
     const [rows] = await db.execute(query);
     return rows;
 };
+
 
 // Mettre à jour le rating d'un commentaire spécifique dans la table Commentaire
 const updateRating = async (commentId, newRating) => {
@@ -43,16 +46,18 @@ const getAverageRating = async () => {
 const getPrestataireById = async (id) => {
     const query = `
         SELECT 
-            Prestataire.Prestataire_id AS id,
-            Prestataire.firstname,
-            Prestataire.familyname,
-            Prestataire.userBio,
-            Prestataire.Job_description,
-            COALESCE(AVG(Commentaire.rating), 0) AS rating
-        FROM Prestataire
-        LEFT JOIN Commentaire ON Prestataire.Prestataire_id = Commentaire.prestataire_id
-        WHERE Prestataire.Prestataire_id = ?
-        GROUP BY Prestataire.Prestataire_id;
+            p.Prestataire_id AS id,
+            p.firstname,
+            p.familyname,
+            p.userBio,
+            p.Job_description,
+            COALESCE(AVG(c.rating), 0) AS rating
+        FROM Prestataire p
+        LEFT JOIN services s ON s.Prestataire_id = p.Prestataire_id
+        LEFT JOIN reserver r ON r.service_id = s.service_id
+        LEFT JOIN commentaire c ON c.client_id = r.client_id
+        WHERE p.Prestataire_id = ?
+        GROUP BY p.Prestataire_id;
     `;
     const [rows] = await db.execute(query, [id]);
     return rows[0]; // Retourne le premier résultat ou `undefined`
@@ -93,11 +98,14 @@ const getPrestataireServicesByClient = async (prestataireId) => {
 // Récupérer les avis d'un prestataire
 const getPrestataireCommentsByClient = async (prestataireId) => {
     const query = `
-        SELECT c.comment_id, c.created_at, c.content, c.rating, cl.firstname, cl.familyname
-        FROM Commentaire c
-        JOIN Client cl ON c.client_id = cl.client_id
-        WHERE c.prestataire_id = ?
-        ORDER BY c.created_at DESC;
+        SELECT c.comment_id, c.created_at, c.content, c.rating, cl.firstName, cl.familyName
+        FROM commentaire c
+        JOIN client cl ON c.client_id = cl.client_id
+        JOIN reserver r ON r.client_id = cl.client_id
+        JOIN services s ON s.service_id = r.service_id
+        WHERE s.prestataire_id = ?
+        ORDER BY c.created_at DESC
+        LIMIT 0, 25;
     `;
     const [rows] = await db.execute(query, [prestataireId]);
     return rows;
