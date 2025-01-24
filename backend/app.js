@@ -8,23 +8,23 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 app.use(bodyParser.json());
 
-const prestataireRoutes = require('./routes/prestataireRoutes');
-const commentsRoutes = require('./routes/commentsRoutes');  
-const servicesRoutes = require('./routes/serviceRoutes');
-const availabilityRoutes = require('./routes/availabilityRoutes');
-const profileRoutes = require('./routes/profileRoutes'); 
-const checklistTasksRoutes = require('./routes/checklistTaskRoutes');
+//const prestataireRoutes = require('./routes/prestataireRoutes');
+//const commentsRoutes = require('./routes/commentsRoutes');  
+//const servicesRoutes = require('./routes/serviceRoutes');
+//const availabilityRoutes = require('./routes/availabilityRoutes');
+//const profileRoutes = require('./routes/profileRoutes'); 
+//const checklistTasksRoutes = require('./routes/checklistTaskRoutes');
 const reservationsRoutes= require('./routes/reservationsRoutes');
-const authRoutes = require('./routes/authRoutes');
+//const authRoutes = require('./routes/authRoutes');
 
-app.use('/api', authRoutes);  
-app.use('/profile', profileRoutes); 
-app.use('/availability', availabilityRoutes); 
-app.use('/services', servicesRoutes);
-app.use('/comments', commentsRoutes); 
-app.use('/reservations', reservationsRoutes); 
-app.use('/chacklistTasks', checklistTasksRoutes);      
-app.use('/prestataire', prestataireRoutes);      
+//app.use('/api', authRoutes);  
+//app.use('/profile', profileRoutes); 
+//app.use('/availability', availabilityRoutes); 
+//app.use('/services', servicesRoutes);
+//app.use('/comments', commentsRoutes); 
+app.use("/api/reservations", reservationsRoutes);
+//app.use('/chacklistTasks', checklistTasksRoutes);      
+//app.use('/prestataire', prestataireRoutes);      
       
 
 app.get('/', (req, res) => {
