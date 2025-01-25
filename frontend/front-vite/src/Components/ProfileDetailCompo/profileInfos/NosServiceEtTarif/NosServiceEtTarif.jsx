@@ -15,7 +15,7 @@ export default function Services() {
 
   useEffect(() => {
     // Fetch data from the backend
-    fetch('https://your-backend-api.com/services') // Replace with your backend endpoint
+    fetch('https://your-backend-api.com/services') // Replace with backend endpoint
       .then((response) => response.json())
       .then((data) => setServices(data))
       .catch((error) => console.error('Error fetching services:', error));

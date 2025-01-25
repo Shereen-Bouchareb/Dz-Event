@@ -25,4 +25,5 @@ nav ul li {
 .dark-nav{
     background: #D08E70;
     transition: 0.4s;
+    width: 100%;
 }

@@ -1,0 +1,17 @@
+### Testing Signup for Prestataire
+
+POST http://localhost:3000/api/signup/prestataire
+Content-Type: application/json
+
+{
+  "Prestataire_id": "1",
+  "firstname": "chirine",
+  "familyname": "bouchareb",
+  "password": "password",
+  "email":"chirine@gmail.com",
+  "userBio": "professional photographer with over 10 years of experience in capturing life’s most precious moments. Specializing in portrait, event, and commercial photography",
+  "job_description":"As a photographer prestataire, John provides photography services for a variety of events and personal projects, including weddings, corporate events, product photography, and family portraits. ",
+  "role": "Photographer",
+  "wilaya":"Skikda"
+
+}

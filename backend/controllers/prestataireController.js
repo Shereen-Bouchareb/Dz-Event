@@ -1,78 +1,171 @@
-const { getAllPrestataire, createPrestataire, deletePrestataire } = require('../models/prestataireModel');
 const prestataireModel = require('../models/prestataireModel');
 
-// Controller function to get all users
-function getAllPrestataire(req, res) {
-  prestataireModel.getAllPrestataire((err, users) => {
-    if (err) {
-      return res.status(500).json({ message: 'Error fetching users', error: err });
-    }
-    res.status(200).json({ users });
-  });
-}
 
-// Controller function to get a user by ID
-function getPrestataireById(req, res) {
-  const userId = req.params.id;
-  
-  prestataireModel.getPrestataireById(userId, (err, user) => {
-    if (err) {
-      return res.status(500).json({ message: 'Error fetching user by ID', error: err });
-    }
-    if (!user) {
-      return res.status(404).json({ message: 'User not found' });
-    }
-    res.status(200).json({ user });
-  });
-}
+//getAllPrestataire
+exports.getAllPrestataire = async (req, res) => {
+    try {
 
-// Controller function to create a new user
-function createPrestataire(req, res) {
-  const userData = req.body;
-
-  prestataireModel.createPrestataire(userData, (err, userId) => {
-    if (err) {
-      return res.status(500).json({ message: 'Error creating user', error: err });
+        const prestataires = await prestataireModel.getAllPrestataire(); // Récupérer tous les prestataires
+        res.status(200).json({ prestataires }); // Retourne les prestataires
+    } catch (err) {
+        console.error('Erreur lors de la récupération des prestataires :', err.message);
+        res.status(500).json({ message: 'Erreur interne du serveur.' });
     }
-    res.status(201).json({ message: 'User created successfully', userId });
-  });
-}
-
-// Controller function to update a user
-function updatePrestataire(req, res) {
-  const userId = req.params.id;
-  const userData = req.body;
-
-  prestataireModel.updatePrestataire(userId, userData, (err, affectedRows) => {
-    if (err) {
-      return res.status(500).json({ message: 'Error updating user', error: err });
-    }
-    if (affectedRows === 0) {
-      return res.status(404).json({ message: 'User not found' });
-    }
-    res.status(200).json({ message: 'User updated successfully' });
-  });
-}
-
-// Controller function to delete a user
-function deletePrestataire(req, res) {
-  const userId = req.params.id;
-
-  prestataireModel.deletePrestataire(userId, (err, affectedRows) => {
-    if (err) {
-      return res.status(500).json({ message: 'Error deleting user', error: err });
-    }
-    if (affectedRows === 0) {
-      return res.status(404).json({ message: 'User not found' });
-    }
-    res.status(200).json({ message: 'User deleted successfully' });
-  });
-}
-
-module.exports = {
-  getAllPrestataire,
-  getPrestataireById,
-  createPrestataire,
-  updatePrestataire,
-  deletePrestataire,
 };
+
+
+
+
+//getPrestataireById
+exports.getPrestataireById = async (req, res) => {
+    const prestataireId = req.params.prestataireId; // Récupérer l'ID du prestataire depuis les paramètres
+
+    try {
+        const prestataire = await prestataireModel.getPrestataireById(prestataireId); // Appel au modèle
+
+        if (!prestataire) {
+            return res.status(404).json({ message: 'Prestataire non trouvé.' });
+        }
+
+        res.status(200).json({ prestataire });
+    } catch (err) {
+        console.error('Erreur lors de la récupération du prestataire :', err.message);
+        res.status(500).json({ message: 'Erreur interne du serveur.' });
+    }
+};
+
+exports.submitComment = async (req, res) => {
+
+    const prestataireId = req.params.prestataireId; 
+    const { content, rating } = req.body;
+    const clientId = req.user.id; 
+
+    if (!content || rating === undefined) {
+        return res.status(400).json({ message: 'Le contenu et la note sont requis.' });
+    }
+
+    try {
+        const result = await prestataireModel.submitComment(prestataireId, rating, content, clientId);
+        res.status(201).json({ message: 'Commentaire ajouté avec succès.', commentId: result.insertId });
+    } catch (err) {
+        console.error('Erreur lors de l\'ajout du commentaire :', err.message);
+        res.status(500).json({ message: 'Erreur interne du serveur.' });
+    }
+};
+
+//getPrestataireCommentsByClient
+exports.getPrestataireCommentsByClient = async (req, res) => {
+    const prestataireId = req.params.prestataireId; 
+
+    try {
+        const comments = await prestataireModel.getPrestataireCommentsByClient(prestataireId);
+        res.status(200).json({ comments });
+    } catch (err) {
+        console.error('Erreur lors de la récupération des commentaires :', err.message);
+        res.status(500).json({ message: 'Erreur interne du serveur.' });
+    }
+};
+
+//getPrestataireServicesByClient
+exports.getPrestataireServicesByClient = async (req, res) => {
+    const prestataireId = req.params.prestataireId; 
+    try {
+        const services = await prestataireModel.getPrestataireServicesByClient(prestataireId);
+        res.status(200).json({ services });
+    } catch (error) {
+        console.error("Erreur lors de la récupération des services :", error.message);
+        res.status(500).json({ message: "Erreur serveur." });
+    }
+};
+
+
+
+//getPrestataireGalleryByClient
+exports.getPrestataireGalleryByClient = async (req, res) => {
+    const prestataireId = req.params.prestataireId; // ID du prestataire depuis les paramètres
+
+    try {
+        const photos = await prestataireModel.getPrestataireGalleryByClient(prestataireId);
+        res.status(200).json({ photos });
+    } catch (error) {
+        console.error('Erreur lors de la récupération des photos :', error);
+        res.status(500).json({ message: 'Erreur interne du serveur.' });
+    }
+};
+
+//getPrestataireAvailabilityByClient
+//getPrestataireByDate
+
+
+exports.getReservationFormByClient  = async (req, res) => {
+
+    const prestataireId = req.params.prestataireId;
+
+    try {
+        const tasks = await prestataireModel.getCheckListTasks(prestataireId);
+        res.status(200).json({ tasks });
+    } catch (error) {
+        console.error('Erreur lors de la récupération des checklist tasks  :', error);
+        res.status(500).json({
+            success: false,
+            message: 'Server error. Unable to retrieve checklist tasks.',
+            error: error.message
+        });
+    }
+};
+
+
+exports.submitReservationFormByClient = async (req, res) => {
+    const { prestataireId, serviceId } = req.params; 
+    const { address, willaya, num_tel, eventDate } = req.body; 
+    const clientId = req.user.id;
+    const createdAt = new Date(); 
+    const reservedAt = new Date(); 
+    const reservationStatus = 'en attente'; 
+
+    if (!address || !willaya || !num_tel || !eventDate) {
+        return res.status(400).json({
+            success: false,
+            message: 'All fields (address, willaya, num_tel, eventDate) are required.',
+        });
+    }
+
+    try {
+        // 1. Insert the event date into eventDate table (or get existing event_date_id)
+        const eventDateId = await prestataireModel.insertEventDate(eventDate);
+
+        // 2. Insert into ReservationForm table
+        const reservationFormResult = await prestataireModel.submitReservationForm({
+            clientId,
+            address,
+            willaya,
+            num_tel,
+            createdAt,
+        });
+
+        // 3. Insert into reserver table
+        await prestataireModel.insertReservation({
+            serviceId,
+            clientId,
+            eventDateId,
+            reservedAt,
+            reservationStatus,
+        });
+
+        res.status(201).json({
+            success: true,
+            message: 'Reservation form and reservation submitted successfully.',
+            data: {
+                reservationFormId: reservationFormResult.formId,
+                eventDateId,
+            },
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: 'Server error. Unable to submit the reservation.',
+            error: error.message,
+        });
+    }
+};
+
