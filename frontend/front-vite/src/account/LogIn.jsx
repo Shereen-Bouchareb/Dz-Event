@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import Account from "../assets/Account.png";
 
 const LogIn = () => {
@@ -11,17 +12,19 @@ const LogIn = () => {
   const [errPassword, setErrPassword] = useState("");
   const [userRole, setUserRole] = useState("");
   const [errUserRole, setErrUserRole] = useState("");
+  const [apiError, setApiError] = useState("");
+  const navigate = useNavigate();
 
   const toggleRememberMe = () => {
     setRememberMe(!rememberMe);
   };
 
-  const handelEmailChange = (e) => {
+  const handleEmailChange = (e) => {
     setEmail(e.target.value);
     setErrEmail("");
   };
 
-  const handelPasswordChange = (e) => {
+  const handlePasswordChange = (e) => {
     setPassword(e.target.value);
     setErrPassword("");
   };
@@ -32,12 +35,12 @@ const LogIn = () => {
       .match(/^[A-Z0-9._%+-]+@[A-Z0-9._%+-]+\.[A-Z]{2,4}$/i);
   };
 
-  const handelUserRoleChange = (e) => {
+  const handleUserRoleChange = (e) => {
     setUserRole(e.target.value);
     setErrUserRole("");
   };
 
-  const handelSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!email) {
@@ -54,6 +57,28 @@ const LogIn = () => {
 
     if (!userRole) {
       setErrUserRole("required");
+    }
+
+    try {
+      const response = await axios.post("http://localhost:5000/api/login", {
+        email,
+        password,
+        userRole,
+      });
+
+      console.log("Login successful:", response.data);
+      if (rememberMe) {
+        localStorage.setItem("token", response.data.token);
+      } else {
+        sessionStorage.setItem("token", response.data.token);
+      }
+      navigate("/");
+    } catch (error) {
+      if (error.response && error.response.status === 401) {
+        setErrPassword("Invalid email or password.");
+      } else {
+        setApiError("Something went wrong. Please try again later.");
+      }
     }
 
     if (email && emailValidation(email) && password && userRole) {
@@ -77,7 +102,7 @@ const LogIn = () => {
         <form
           action=""
           method=""
-          onSubmit={handelSubmit}
+          onSubmit={handleSubmit}
           className="flex justify-center items-center flex-col w-full h-full"
         >
           <h1 className="text-main-brown text-4xl leading-[72px] font-bold mb-[20px]">
@@ -85,29 +110,27 @@ const LogIn = () => {
           </h1>
           <div className="flex flex-col  w-[400px] relative ">
             <div className="flex items-center">
-            <label
-              htmlFor="typeUser"
-              className="  text-[15px] font-medium leading-[30px] mr-3"
-              
-            >
-              Your Role
-            </label>
-            {errUserRole && (
-              <p className="text-red-500 text-xs">{errUserRole}</p>
-            )}
+              <label
+                htmlFor="typeUser"
+                className="  text-[15px] font-medium leading-[30px] mr-3"
+              >
+                Your Role
+              </label>
+              {errUserRole && (
+                <p className="text-red-500 text-xs">{errUserRole}</p>
+              )}
             </div>
-            
 
             <select
               id="typeUser"
               value={userRole}
-              onChange={handelUserRoleChange}
+              onChange={handleUserRoleChange}
               //   className="w-[400px] h-[50px] p-[20px] gap-2 rounded-[5px] focus:outline-none shadow-[inset_0px_0px_4px_0px_rgba(0,0,0,0.25)]"
               className=" relative w-[400px] h-[50px] p-[10px]   border rounded-md focus:outline-none  shadow-[inset_0px_0px_4px_0px_rgba(0,0,0,0.25)] "
             >
               {/* appearance-none */}
-              <option value="" disabled >
-                <span style={{color:"#9F9F9F"}}>Select your role</span>
+              <option value="" disabled>
+                <span style={{ color: "#9F9F9F" }}>Select your role</span>
               </option>
               <option value="Client">Client</option>
               <option value="Prestataire">Prestataire</option>
@@ -134,7 +157,7 @@ const LogIn = () => {
               // required
               value={email}
               autoComplete="username"
-              onChange={handelEmailChange}
+              onChange={handleEmailChange}
               placeholder="Your Email-Address"
               className="w-[400px] h-[50px] p-[10px]  rounded-[5px] focus:outline-none shadow-[inset_0px_0px_4px_0px_rgba(0,0,0,0.25)]"
             />
@@ -156,7 +179,7 @@ const LogIn = () => {
               type="password"
               // required
               value={password}
-              onChange={handelPasswordChange}
+              onChange={handlePasswordChange}
               placeholder="Your Password"
               className="w-[400px] h-[50px]  p-[10px] gap-2 rounded-[5px] focus:outline-none shadow-[inset_0px_0px_4px_0px_rgba(0,0,0,0.25)]"
               autoComplete="current-password"
@@ -182,13 +205,14 @@ const LogIn = () => {
           </div>
 
           <div className="flex   flex-col">
-          <Link to='/SearchPage'>
-            <button
-              type="submit"
-              className=" bg-main-brown text-white text-center font-bold w-[400px] h-[50px]  p-[10px] mt-[30px] gap-2 rounded-[5px] focus:outline-none shadow-[inset_0px_0px_4px_0px_rgba(0,0,0,0.25)]"
-            >
-              LogIn
-            </button>
+            {apiError && <p className="text-red-500 text-xs">{apiError}</p>}
+            <Link to="/SearchPage">
+              <button
+                type="submit"
+                className=" bg-main-brown text-white text-center font-bold w-[400px] h-[50px]  p-[10px] mt-[30px] gap-2 rounded-[5px] focus:outline-none shadow-[inset_0px_0px_4px_0px_rgba(0,0,0,0.25)]"
+              >
+                LogIn
+              </button>
             </Link>
 
             <Link

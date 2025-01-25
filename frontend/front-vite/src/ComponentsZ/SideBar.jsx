@@ -6,8 +6,11 @@ import { BsBoxSeam } from "react-icons/bs";
 import { RiMessage2Line } from "react-icons/ri";
 import { TbChecklist } from "react-icons/tb";
 import { IoMdLogOut } from "react-icons/io";
+import Translation from "./Translation";
+import { useTranslation } from "react-i18next";
 
 const SideBar = () => {
+  const { t } = useTranslation();
   return (
     <div className="bg-main-beige h-screen relative">
       <div className="p-[50px] pl-0 pt-[10px] ml-[30px] w-[80%] text-center">
@@ -23,7 +26,7 @@ const SideBar = () => {
           >
             <div className="flex text-main-brown font-semibold m-[10px] p-[15px] ml-0  pl-[25px] w-full hover:bg-secondary-beige">
               <IoPersonOutline size={20} />
-              <p className="ml-[20px]">Profile</p>
+              <p className="ml-[20px]">{t(`Profile`)}</p>
             </div>
           </NavLink>
           <NavLink
@@ -34,7 +37,7 @@ const SideBar = () => {
           >
             <div className="flex text-main-brown font-semibold m-[10px] p-[15px] ml-0  pl-[25px] w-full hover:bg-secondary-beige">
               <SlCalender size={20} />
-              <p className="ml-[20px]">Votre disponibilité</p>
+              <p className="ml-[20px]">{t(`Votre disponibilité`)}</p>
             </div>
           </NavLink>
           <NavLink
@@ -45,7 +48,7 @@ const SideBar = () => {
           >
             <div className="flex text-main-brown font-semibold m-[10px] p-[15px] ml-0  pl-[25px] w-full hover:bg-secondary-beige">
               <BsBoxSeam size={20} />
-              <p className="ml-[20px]">Demande de reservation</p>
+              <p className="ml-[20px]">{t(`Demande de reservation`)}</p>
             </div>
           </NavLink>
           <NavLink
@@ -56,7 +59,7 @@ const SideBar = () => {
           >
             <div className="flex text-main-brown font-semibold m-[10px] p-[15px] ml-0  pl-[25px] w-full hover:bg-secondary-beige">
               <RiMessage2Line size={20} />
-              <p className="ml-[20px]">Les Avis</p>
+              <p className="ml-[20px]">{t(`Les Avis`)}</p>
             </div>
           </NavLink>
 
@@ -68,7 +71,7 @@ const SideBar = () => {
           >
             <div className="flex text-main-brown font-semibold m-[10px] p-[15px] ml-0  pl-[25px] w-full hover:bg-secondary-beige">
               <TbChecklist size={20} />
-              <p className="ml-[20px]">Votre Service</p>
+              <p className="ml-[20px]">{t(`Votre Service `)}</p>
             </div>
           </NavLink>
           <NavLink
@@ -83,6 +86,9 @@ const SideBar = () => {
             </div>
           </NavLink>
         </div>
+      </div>
+      <div>
+        <Translation/>
       </div>
       <div className="absolute bottom-0 flex text-main-brown    mt-[45px]  p-[15px] w-full hover:bg-secondary-beige border-t border-main-grey">
         <IoMdLogOut size={20} />

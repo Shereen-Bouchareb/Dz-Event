@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Account from "../assets/Account.png";
 import { Link } from "react-router-dom";
+import axios from 'axios'
 // import { RiArrowDropDownLine } from "react-icons/ri";
 
 const SignUpPrestataire = () => {

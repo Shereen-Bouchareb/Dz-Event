@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Account from "../assets/Account.png";
 import { Link } from "react-router-dom";
+import axios from 'axios'
 
 const SignUpClient = () => {
   const [name, setName] = useState("");
@@ -51,7 +52,7 @@ const SignUpClient = () => {
     return password === confirmPassword;
   };
 
-  const handelSubmit = (e) => {
+  const handelSubmit = async(e) => {
     e.preventDefault();
 
     if (!name) {
@@ -82,7 +83,17 @@ const SignUpClient = () => {
     if (!isPasswordMatch(password,confirmPassword)) {
       setErrConfirmPassword("password incorrect");
     }
-
+         try {
+       const response = await axios.post(
+         "/api/signup/client",
+         {role: userRole,}
+       );
+       if (response.status === 201) {
+         navigate(userRole === "Client" ? "/SignUpClient" : "/SignUpPrestataire");
+       }
+     } catch (err) {
+       setApiError("Failed to register. Please try again.");
+    }
     if (
       name &&
       familyName &&
