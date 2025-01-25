@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Account from "../assets/Account.png";
 import { Link } from "react-router-dom";
+import axios from "axios";
 // import { RiArrowDropDownLine } from "react-icons/ri";
 
 const SignUpPrestataire = () => {
@@ -19,6 +20,7 @@ const SignUpPrestataire = () => {
   const [errPassword, setErrPassword] = useState("");
   const [errConfirmPassword, setErrConfirmPassword] = useState("");
   const [errService, setErrService] = useState("");
+  const navigate = useNavigate()
 
   const handelNameChange = (e) => {
     setName(e.target.value);
@@ -69,7 +71,7 @@ const SignUpPrestataire = () => {
     setBio(e.target.value);
   };
 
-  const handelSubmit = (e) => {
+  const handelSubmit = async(e) => {
     e.preventDefault();
 
     if (!name) {
@@ -104,6 +106,28 @@ const SignUpPrestataire = () => {
     if(!service){
         setErrService("required")
     }
+    try {
+      const response = await axios.post(
+        "http://localhost:3000/api/signup/client",
+        {role: "Prestataire",
+          firstName: name,
+          lastName: familyName,
+          email: email,
+          password: password,
+          description: description,
+          bio : bio,
+          service: service
+        }
+      );
+      console.log("success")
+      if (response.status === 201){
+        
+        navigate("/SearchPage")
+      }
+      clearForm();
+    } catch (error) {
+      console.error("error signing up: ", error.response?.data || error.message);
+    }
     if (
       name &&
       familyName &&
@@ -126,6 +150,7 @@ const SignUpPrestataire = () => {
       clearForm();
     }
   };
+
 
   const clearForm = () => {
     setName("");

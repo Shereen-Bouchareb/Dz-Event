@@ -15,7 +15,7 @@ function SearchPrest() {
 
 
 
-  const handleOpenWilayaChoise = () => setOpenWilayaChoise(true);
+  const handleOpenWilayaChoisbe = () => setOpenWilayaChoise(true);
   const handleCloseWilayaChoise = () => setOpenWilayaChoise(false);
 
   const handleOpenRoleChoise = () => setOpenRoleChoise(true)

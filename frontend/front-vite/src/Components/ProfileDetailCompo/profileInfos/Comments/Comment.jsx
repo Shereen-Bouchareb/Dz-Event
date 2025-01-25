@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import  { useState, useEffect } from 'react';
 import ProfilePicture from './photographer.jpg';
 import CommentCards from './Commentcards';
 
@@ -55,10 +55,10 @@ function Comments() {
             
         }
     ]);
-/* useEffect(()=> {
+useEffect(()=> {
     const fetchProduct = async () => {
         try {
-            const response = await fetch("http://localhost:4000/comment/allcomments"); ///endpoint here
+            const response = await fetch("http://localhost:3000/prestataires/1/comments"); ///endpoint here
             const responseData = await response.json();
             if (response.ok) {
                 console.log(responseData.comments)
@@ -73,7 +73,7 @@ function Comments() {
 
   
     fetchProduct();
-  },[Comment]) */
+  },[Comment]) 
   return (
           <div style={{minHeight:"800px" , marginTop:"50px"}}>
                 <div style={{ display: 'flex', flexWrap: 'wrap' }}>
