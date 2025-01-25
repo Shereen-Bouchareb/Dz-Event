@@ -3,6 +3,14 @@ const cors = require('cors');
 const app = express(); 
 const bodyParser = require('body-parser');
 
+
+
+// Importation de la configuration Swagger
+const swaggerUi = require('swagger-ui-express');
+const swaggerSpec = require('./swagger');  // Importer ton fichier swagger.js
+
+
+
 app.use(express.json()); 
 app.use(express.urlencoded({ extended: true })); 
 app.use(cors());
@@ -16,6 +24,13 @@ const profileRoutes = require('./routes/profileRoutes');
 const checklistTasksRoutes = require('./routes/checklistTaskRoutes');
 const reservationsRoutes= require('./routes/reservationsRoutes');
 const authRoutes = require('./routes/authRoutes');
+
+
+// Utilisation de Swagger UI pour la documentation
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
+
+
 
 app.use('/api', authRoutes);  
 app.use('/profile', profileRoutes); 

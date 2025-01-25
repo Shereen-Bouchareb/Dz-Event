@@ -1,0 +1,11 @@
+.reserved {
+    background-color: red;
+    color: white;
+    pointer-events: none; /* Prevents clicking */
+  }
+  
+  .highlighted {
+    background-color: green;
+    color: white;
+    border-radius: 50%;
+  }
