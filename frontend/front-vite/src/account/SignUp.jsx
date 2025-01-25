@@ -78,7 +78,7 @@ const SignUp = () => {
               id="typeUser"
               value={userRole}
               onChange={handleUserRoleChange}
-              //   className="w-[400px] h-[50px] p-[20px] gap-2 rounded-[5px] focus:outline-none shadow-[inset_0px_0px_4px_0px_rgba(0,0,0,0.25)]"
+              
               className=" relative w-[210px] h-[50px] p-[10px]   border rounded-md focus:outline-none  shadow-[inset_0px_0px_4px_0px_rgba(0,0,0,0.25)] focus:ring-2 focus:ring-main-brown"
             >
               {/* appearance-none */}
