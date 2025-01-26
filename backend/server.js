@@ -1,24 +1,28 @@
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
-const emailRoutes = require("./routes/emailRoutes"); // Import des routes
+const dotenv = require("dotenv");
 
+// Charger les variables d'environnement depuis le fichier .env
+dotenv.config();
+
+// Initialiser l'application Express
 const app = express();
-const PORT = 3000;
 
-// Middleware
+// Middleware pour autoriser les requêtes provenant de n'importe quel domaine (CORS)
 app.use(cors());
+
+// Middleware pour parser le corps des requêtes en JSON
 app.use(bodyParser.json());
 
-// Routes
-app.use("/api", emailRoutes); // Préfixe "/api" pour toutes les routes
+// Importer les routes
+const checklistTasksRoutes = require("./routes/checklistTaskRoutes");
 
-// Route par défaut pour tester le serveur
-app.get("/", (req, res) => {
-  res.send("Bienvenue sur le serveur Node.js !");
-});
+// Utiliser les routes importées
+app.use("/api/checklist", checklistTasksRoutes);
 
 // Démarrer le serveur
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-  console.log(`Serveur démarré sur http://localhost:${PORT}`);
+  console.log(`Server is running on port ${PORT}`);
 });

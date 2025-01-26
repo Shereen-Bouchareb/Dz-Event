@@ -1,7 +1,7 @@
-const db = require('../config/db');
+const db = require("../config/db");
 
 // Ajouter une tâche à la checklist
-const addTask = async (taskName, prestataireId) => {
+const AddPrestataireChecklist = async (taskName, prestataireId) => {
   const query = `
     INSERT INTO ChecklistTasks (task_name, Prestataire_id)
     VALUES (?, ?)
@@ -11,7 +11,7 @@ const addTask = async (taskName, prestataireId) => {
 };
 
 // Récupérer les tâches d'un prestataire
-const getTasksByPrestataire = async (prestataireId) => {
+const getPrestataireChecklist = async (prestataireId) => {
   const query = `
     SELECT task_id, task_name
     FROM ChecklistTasks
@@ -22,7 +22,7 @@ const getTasksByPrestataire = async (prestataireId) => {
 };
 
 // Supprimer une tâche de la checklist
-const deleteTask = async (taskId) => {
+const deletePrestataireChecklist = async (taskId) => {
   const query = `
     DELETE FROM ChecklistTasks
     WHERE task_id = ?
@@ -32,7 +32,7 @@ const deleteTask = async (taskId) => {
 };
 
 module.exports = {
-  addTask,
-  getTasksByPrestataire,
-  deleteTask,
+  getPrestataireChecklist,
+  AddPrestataireChecklist,
+  deletePrestataireChecklist,
 };
