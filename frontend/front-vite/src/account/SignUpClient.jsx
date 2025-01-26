@@ -2,8 +2,10 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Account from "../assets/Account.png";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 const SignUpClient = () => {
+  const navigate = useNavigate();
   const [name, setName] = useState("");
   const [familyName, setFamilyName] = useState("");
   const [email, setEmail] = useState("");
@@ -51,7 +53,7 @@ const SignUpClient = () => {
     return password === confirmPassword;
   };
 
-  const handelSubmit = (e) => {
+  const handelSubmit = async(e) => {
     e.preventDefault();
 
     if (!name) {
@@ -82,7 +84,25 @@ const SignUpClient = () => {
     if (!isPasswordMatch(password,confirmPassword)) {
       setErrConfirmPassword("password incorrect");
     }
-
+    try {
+      const response = await axios.post(
+        "http://localhost:3000/api/signup/client",
+        {role: "Client",
+          firstName: name,
+          lastName: familyName,
+          email: email,
+          password: password
+        }
+      );
+      console.log("success")
+      if (response.status === 201){
+        
+        navigate("/SearchPage")
+      }
+      clearForm();
+    } catch (error) {
+      console.error("error signing up: ", error.response?.data || error.message);
+    }
     if (
       name &&
       familyName &&
@@ -243,7 +263,7 @@ const SignUpClient = () => {
           </div>
 
           <div className="flex   flex-col">
-          <Link to='/SearchPage'> 
+          <Link > 
             <button
               type="submit"
               className=" bg-main-brown text-white text-center font-bold w-[400px] h-[50px]  p-[10px] mt-[30px] gap-2 rounded-[5px] focus:outline-none shadow-[inset_0px_0px_4px_0px_rgba(0,0,0,0.25)]"
@@ -251,7 +271,7 @@ const SignUpClient = () => {
               Sign Up
             </button>
             </Link>
-           <Link to='/LogIn'>
+           <Link to="/Login">
             <a
               href=""
               className="text-main-brown text-[12px] font-medium text-center"

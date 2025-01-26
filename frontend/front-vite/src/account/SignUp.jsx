@@ -20,10 +20,11 @@ const SignUp = () => {
     if (!userRole) {
       setErrUserRole("required");
     }
+  
 
-    // try {
+    // try {f
     //   const response = await axios.post(
-    //     "http://localhost:3000/api/signup/client",
+    //     " REACT_APP_API_BASE_URL/api/signup/client",
     //     {role: userRole,}
     //   );
     //   if (response.status === 201) {

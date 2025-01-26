@@ -78,20 +78,20 @@ exports.getCheckListTasks = async (prestataireId) => {
 };
 
 exports.submitReservationForm = async (formData) => {
-    const { clientId, address, willaya, num_tel, createdAt } = formData;
+    const { clientId, address, wilaya, num_tel, createdAt } = formData;
     
 
     try {
         const query = `
-            INSERT INTO ReservationFrom (address, willaya, num_tel, created_at, client_id)
+            INSERT INTO reservationform (address, wilaya, num_tel, created_at, client_id)
             VALUES (?, ?, ?, ?, ?);
         `;
-        const [result] = await db.execute(query, [address, willaya, num_tel, createdAt, clientId]);
+        const [result] = await db.execute(query, [address, wilaya, num_tel, createdAt, clientId]);
 
         return {
             formId: result.insertId, // Auto-incremented ID of the form
             address,
-            willaya,
+            wilaya,
             num_tel,
             createdAt,
         };
@@ -123,14 +123,14 @@ exports.insertEventDate = async (eventDate) => {
 };
 
 exports.insertReservation = async (reservationData) => {
-    const { serviceId, clientId, eventDateId, reservedAt, reservationStatus } = reservationData;
+    const { serviceId, clientId, eventDateId, reservedAt, reservation_status } = reservationData;
 
     try {
         const query = `
             INSERT INTO reserver (service_id, client_id, event_date_id, reserved_at, reservation_status)
             VALUES (?, ?, ?, ?, ?);
         `;
-        const [result] = await db.execute(query, [serviceId, clientId, eventDateId, reservedAt, reservationStatus]);
+        const [result] = await db.execute(query, [serviceId, clientId, eventDateId, reservedAt, reservation_status]);
 
         return result.insertId; // Return the new reservation ID
     } catch (error) {

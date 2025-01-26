@@ -116,12 +116,12 @@ const SignUpPrestataire = () => {
           password: password,
           description: description,
           bio : bio,
-          service: service
+          service: servicecd 
         }
       );
       console.log("success")
       if (response.status === 201){
-        
+
         navigate("/SearchPage")
       }
       clearForm();

@@ -116,17 +116,17 @@ exports.getReservationFormByClient  = async (req, res) => {
 
 
 exports.submitReservationFormByClient = async (req, res) => {
-    const { prestataireId, serviceId } = req.params; 
-    const { address, willaya, num_tel, eventDate } = req.body; 
+    const serviceId = req.params.serviceId;
+    const { address, wilaya, num_tel, eventDate } = req.body; 
     const clientId = req.user.id;
     const createdAt = new Date(); 
     const reservedAt = new Date(); 
-    const reservationStatus = 'en attente'; 
+    const reservation_status = 'en attente'; 
 
-    if (!address || !willaya || !num_tel || !eventDate) {
+    if (!address || !wilaya || !num_tel || !eventDate) {
         return res.status(400).json({
             success: false,
-            message: 'All fields (address, willaya, num_tel, eventDate) are required.',
+            message: 'All fields (address, wilaya, num_tel, eventDate) are required.',
         });
     }
 
@@ -138,7 +138,7 @@ exports.submitReservationFormByClient = async (req, res) => {
         const reservationFormResult = await prestataireModel.submitReservationForm({
             clientId,
             address,
-            willaya,
+            wilaya,
             num_tel,
             createdAt,
         });
@@ -149,7 +149,7 @@ exports.submitReservationFormByClient = async (req, res) => {
             clientId,
             eventDateId,
             reservedAt,
-            reservationStatus,
+            reservation_status,
         });
 
         res.status(201).json({
