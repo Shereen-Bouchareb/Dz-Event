@@ -3,8 +3,8 @@ const userQueries = require('../models/commentsModel');
 
 exports.getPrestataireComments = async (req, res) => {
     try {
-        const prestataireId = req.params.prestataireId;
-        const comments = await userQueries.getCommentsByPrestataireId(prestataireId);
+        const  prestataire_id  = req.user.id;
+        const comments = await userQueries.getPrestataireComments(prestataire_id);
         res.status(200).json(comments);
     } catch (error) {
         res.status(500).json({ error: 'Server error', details: error.message });

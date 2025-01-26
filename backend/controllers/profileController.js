@@ -21,6 +21,8 @@ const profile = require('../models/profileModel');
     }
   };
 
+
+  
   // Récupérer toutes les photos
   exports.getPrestatairePictures= async (req, res) => {
     const { prestataire_id } = req.user.id;
@@ -57,4 +59,3 @@ const profile = require('../models/profileModel');
 
 
 
-module.exports = profileController;

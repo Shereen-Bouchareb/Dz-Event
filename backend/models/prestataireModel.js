@@ -107,11 +107,6 @@ exports.insertEventDate = async (eventDate) => {
         const findQuery = `SELECT event_date_id FROM eventdate WHERE event_date = ?`;
         const [findResult] = await db.execute(findQuery, [eventDate]);
 
-        if (findResult.length > 0) {
-            // If the event date exists, return its ID
-            return findResult[0].event_date_id;
-        }
-
         // If not, insert the new event date
         const insertQuery = `INSERT INTO eventdate (event_date) VALUES (?)`;
         const [insertResult] = await db.execute(insertQuery, [eventDate]);

@@ -19,7 +19,9 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.8.4",
     "mysql": "^2.18.1",
-    "mysql2": "^3.11.5"
+    "mysql2": "^3.11.5",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {
     "chai": "^5.1.2",

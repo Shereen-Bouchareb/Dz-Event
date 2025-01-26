@@ -1,6 +1,7 @@
 
 const db = require('../config/db');
-// Ajouter un service
+
+
 const addPrestataireService = async (name, description, price, prestataireId) => {
   try {
     const query = `
@@ -15,7 +16,8 @@ const addPrestataireService = async (name, description, price, prestataireId) =>
   }
 };
 
-// Récupérer les services d'un prestataire
+
+
 const getPrestataireServices = async (prestataireId) => {
   try {
     const query = `
@@ -31,18 +33,26 @@ const getPrestataireServices = async (prestataireId) => {
   }
 };
 
-// Supprimer un service
-const deletePrestataireService = async (id) => {
+
+
+const deletePrestataireService = async (serviceId, prestataireId) => {
   try {
-    const query = `
-      DELETE FROM services
-      WHERE service_id = ?
-    `;
-    const [result] = await db.execute(query, [id]);
-    return result;
+      // SQL query to delete the service
+      const query = `
+          DELETE FROM services
+          WHERE service_id = ? AND Prestataire_id = ?
+      `;
+      
+      const [result] = await db.execute(query, [serviceId, prestataireId]);
+
+      // Check if the service was deleted (result.affectedRows > 0 indicates successful deletion)
+      if (result.affectedRows === 0) {
+          throw new Error('Service not found or you do not have permission to delete this service');
+      }
+
+      return result; // Return the result to the controller
   } catch (error) {
-    console.error("Erreur lors de la suppression du service:", error);
-    throw error;
+      throw new Error('Error deleting service: ' + error.message);
   }
 };
 

@@ -1,7 +1,7 @@
 const db = require('../config/db');
 
 // Ajouter une photo
-const addPrestatairePicture = async (prestataire_id, photoUrl) => {
+exports.addPrestatairePicture = async (prestataire_id, photoUrl) => {
   const query = `
     INSERT INTO pictures (url, Prestataire_id) 
     VALUES (?, ?)
@@ -15,7 +15,7 @@ const addPrestatairePicture = async (prestataire_id, photoUrl) => {
 };
 
 // Récupérer toutes les photos
-const getPrestatairePictures = async (prestataire_id) => {
+exports.getPrestatairePictures = async (prestataire_id) => {
   const query = `
     SELECT picture_id, url, uploaded_at 
     FROM pictures 
@@ -30,7 +30,7 @@ const getPrestatairePictures = async (prestataire_id) => {
 };
 
 // Mettre à jour le profil d'un prestataire
-const editPrestataireProfile = async (prestataire_id, data) => {
+exports.editPrestataireProfile = async (prestataire_id, data) => {
   const query = `
     UPDATE prestataire
     SET firstname = ?, familyname = ?, userBio = ?, job_description = ?, profile_pic_url = ?
@@ -50,10 +50,4 @@ const editPrestataireProfile = async (prestataire_id, data) => {
   } catch (error) {
     throw new Error(`Erreur lors de la mise à jour du profil : ${error.message}`);
   }
-};
-
-module.exports = { 
-  getPrestatairePictures,
-  addPrestatairePicture,
-  editPrestataireProfile
 };

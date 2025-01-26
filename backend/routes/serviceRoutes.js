@@ -6,11 +6,9 @@ const authorizeRole = require('../middleware/authorizeRole');
 
 // prestataire Routes
 
-
-// client routes 
 router.get('/', authenticateToken, authorizeRole(['prestataire']), serviceController.getPrestataireServices);
 router.post('/', authenticateToken, authorizeRole(['prestataire']), serviceController.addPrestataireService);
-router.delete('/', authenticateToken, authorizeRole(['prestataire']), serviceController.deletePrestataireService);
+router.delete('/:serviceId', authenticateToken, authorizeRole(['prestataire']), serviceController. deletePrestataireService);
 
 
 
