@@ -1,22 +1,24 @@
 const express = require("express");
+const cors = require("cors");
 const bodyParser = require("body-parser");
-const emailRoutes = require("./routes/emailRoutes");
-require("dotenv").config(); // Charger les variables d'environnement
+const emailRoutes = require("./routes/emailRoutes"); // Import des routes
 
 const app = express();
 const PORT = 3000;
 
 // Middleware
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cors());
 app.use(bodyParser.json());
 
-// Définir le dossier des vues (statique)
-app.use(express.static("views"));
-
 // Routes
-app.use("/api", emailRoutes);
+app.use("/api", emailRoutes); // Préfixe "/api" pour toutes les routes
 
-// Lancer le serveur
+// Route par défaut pour tester le serveur
+app.get("/", (req, res) => {
+  res.send("Bienvenue sur le serveur Node.js !");
+});
+
+// Démarrer le serveur
 app.listen(PORT, () => {
   console.log(`Serveur démarré sur http://localhost:${PORT}`);
 });
