@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Booking Cards</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-8">
+  <div class="container mx-auto">
+    <!-- Booking Card 1 -->
+    <div class="bg-[#FEF5E2] shadow-md rounded-lg p-6 mb-6 max-w-lg mx-auto relative">
+      <!-- Action Buttons -->
+      <div class="absolute top-4 right-4 flex space-x-2 items-center">
+        <button class="text-[#A6725A] hover:text-[#75574A] flex items-center">
+          <svg class="w-5 h-5 mr-1" fill="currentColor" viewBox="0 0 24 24"><path d="M12 4c4.5 0 8.4 3.1 10.1 8-1.7 4.9-5.6 8-10.1 8S3.6 16.9 1.9 12C3.6 7.1 7.5 4 12 4zm0-2C6.5 2 1.7 5.5 0 12c1.7 6.5 6.5 10 12 10s10.3-3.5 12-10c-1.7-6.5-6.5-10-12-10zM12 7c2.2 0 4 1.8 4 4s-1.8 4-4 4-4-1.8-4-4 1.8-4 4-4zm0 2a2 2 0 100 4 2 2 0 000-4z"></path></svg>
+        </button>
+        <button class="bg-[#F44336] text-white px-2 py-2 rounded-lg shadow hover:bg-red-600">
+          Refusé
+        </button>
+        <button class="bg-[#36BD2A] text-white px-2 py-2 rounded-lg shadow hover:bg-green-600">
+          Accepté
+        </button>
+        <button class="text-[#A6725A] hover:text-[#75574A]">
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M3 6h18M9 6v12m6-12v12M4 6l1 14c.1 1.1.9 2 2 2h10c1.1 0 2-.9 2-2l1-14M10 11h4"></path></svg>
+        </button>
+      </div>
+
+      <!-- Client Details -->
+      <div class="flex items-start">
+        <div class="w-12 h-12 flex items-center justify-center rounded-full text-[#75574A] mr-4">
+          <svg class="w-10 h-10" fill="currentColor" viewBox="0 0 24 24"><path d="M12 12c2.2 0 4-1.8 4-4s-1.8-4-4-4-4 1.8-4 4 1.8 4 4 4zm-7 8c0-4 3.1-7 7-7s7 3 7 7H5z"></path></svg>
+        </div>
+        <div>
+          <p class="text-sm text-[#75574A] font-medium">Maria D.</p>
+          <p class="text-sm text-[#D08E70]">maria.d@email.com</p>
+          <p class="text-sm text-[#D08E70]">06 12 34 56 78</p>
+        </div>
+      </div>
+
+      <!-- Booking Details -->
+      <h2 class="mt-4 text-lg font-semibold text-[#D08E70]">
+        Portrait Photography
+      </h2>
+      <p class="text-sm text-[#75574A] mt-2">
+        <span class="flex items-center">
+          <svg class="w-5 h-5 text-[#75574A] mr-2" fill="currentColor" viewBox="0 0 24 24"><path d="M12 1v22M2 11h20"></path></svg>
+          2024-12-15
+        </span>
+        <span class="flex items-center mt-1">
+          <svg class="w-5 h-5 text-[#75574A] mr-2" fill="currentColor" viewBox="0 0 24 24"><path d="M17 11h-2V6a4 4 0 10-8 0v5H7l-1 11h12l-1-11z"></path></svg>
+          Château de Versailles / Wilaya
+        </span>
+      </p>
+    </div>
+
+    <!-- Booking Card 2 -->
+    <div class="bg-[#FEF5E2] shadow-md rounded-lg p-6 mb-6 max-w-lg mx-auto relative">
+      <!-- Same structure as Card 1 -->
+      <div class="absolute top-4 right-4 flex space-x-2 items-center">
+        <button class="text-[#A6725A] hover:text-[#75574A] flex items-center">
+          <svg class="w-5 h-5 mr-1" fill="currentColor" viewBox="0 0 24 24"><path d="M12 4c4.5"></path></svg>
+        </div>
+</html>

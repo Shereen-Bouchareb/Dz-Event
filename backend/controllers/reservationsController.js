@@ -1,100 +1,108 @@
-const {
-  checkAvailability,
-  createReservation: createReservationModel,
-  updateReservationStatus,
-  updateAvailabilityStatus,
-  getReservationById,
-} = require("../models/reservationsModel");
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import {
+  FaCalendarAlt,
+  FaMapMarkerAlt,
+  FaUserCircle,
+  FaEye,
+  FaTrashAlt,
+} from "react-icons/fa";
 
-// Créer une réservation
-exports.creerReservation = async (req, res) => {
-  const { client_id, Prestataire_id, event_date } = req.body;
+const BookingCards = () => {
+  const [bookings, setBookings] = useState([]);
 
-  try {
-    const connection = await pool.getConnection();
-    await connection.beginTransaction();
+  useEffect(() => {
+    const fetchBookings = async () => {
+      try {
+        const response = await axios.get("/api/reservations");
+        setBookings(response.data);
+      } catch (error) {
+        console.error("Erreur lors du chargement des réservations :", error);
+      }
+    };
 
-    // Récupérer ou créer l'ID de l'event_date
-    let [dateRows] = await connection.query(
-      "SELECT event_date_id FROM eventdate WHERE event_date = ?",
-      [event_date]
-    );
+    fetchBookings();
+  }, []);
 
-    let event_date_id;
-    if (dateRows.length === 0) {
-      const [result] = await connection.query(
-        "INSERT INTO eventdate (event_date) VALUES (?)",
-        [event_date]
-      );
-      event_date_id = result.insertId;
-    } else {
-      event_date_id = dateRows[0].event_date_id;
+  const accepterReservation = async (id) => {
+    try {
+      const response = await axios.patch(`/api/reservations/${id}`, {
+        reservation_status: "accepté",
+      });
+      console.log(response.data.message);
+      fetchBookings();
+    } catch (error) {
+      console.error("Erreur lors de l'acceptation de la réservation :", error);
     }
+  };
 
-    // Vérifier la disponibilité
-    const availability = await checkAvailability(Prestataire_id, event_date);
-    if (availability.length === 0) {
-      throw new Error("Le prestataire n'est pas disponible à cette date.");
+  const refuserReservation = async (id) => {
+    try {
+      const response = await axios.patch(`/api/reservations/${id}`, {
+        reservation_status: "refusé",
+      });
+      console.log(response.data.message);
+      fetchBookings();
+    } catch (error) {
+      console.error("Erreur lors du refus de la réservation :", error);
     }
+  };
 
-    // Créer la réservation
-    const result = await createReservationModel(
-      client_id,
-      Prestataire_id,
-      event_date_id
-    );
+  return (
+    <div className="bg-gray-100 p-8">
+      {bookings.map((booking, index) => (
+        <div
+          key={index}
+          className="bg-[#FEF5E2] shadow-md rounded-lg p-6 mb-6 max-w-lg mx-auto relative"
+        >
+          {/* Action Buttons */}
+          <div className="absolute top-4 right-4 flex space-x-2 items-center">
+            <button
+              className="bg-[#36BD2A] text-white px-2 py-2 rounded-lg shadow hover:bg-green-600"
+              onClick={() => accepterReservation(booking.id)}
+            >
+              Accepté
+            </button>
+            <button
+              className="bg-[#F44336] text-white px-2 py-2 rounded-lg shadow hover:bg-red-600"
+              onClick={() => refuserReservation(booking.id)}
+            >
+              Refusé
+            </button>
+          </div>
 
-    // Mettre à jour la disponibilité
-    await connection.query(
-      'UPDATE availability SET status = "Unavailable" WHERE Prestataire_id = ? AND date = ?',
-      [Prestataire_id, event_date]
-    );
+          {/* Client Details */}
+          <div className="flex items-start">
+            <div className="w-12 h-12 flex items-center justify-center rounded-full text-[#75574A] mr-4">
+              <FaUserCircle className="text-6xl" />
+            </div>
+            <div>
+              <p className="text-sm text-[#75574A] font-medium">
+                {booking.clientName}
+              </p>
+              <p className="text-sm text-[#D08E70]">{booking.email}</p>
+              <p className="text-sm text-[#D08E70]">{booking.phone}</p>
+            </div>
+          </div>
 
-    await connection.commit();
-    res.status(201).send({ message: "Réservation créée avec succès", result });
-  } catch (error) {
-    await connection.rollback();
-    res.status(500).send({ error: error.message });
-  } finally {
-    connection.release();
-  }
+          {/* Booking Details */}
+          <h2 className="mt-4 text-lg font-semibold text-[#D08E70]">
+            {booking.title}
+          </h2>
+          <p className="text-sm text-[#75574A] mt-2">
+            <span className="flex items-center">
+              <FaCalendarAlt className="text-[#75574A] mr-2" />
+              {booking.date}
+            </span>
+            <span className="flex items-center mt-1">
+              <FaMapMarkerAlt className="text-[#75574A] mr-2" />
+              {booking.location}
+            </span>
+          </p>
+        </div>
+      ))}
+    </div>
+  );
 };
 
-// Mettre à jour l'état d'une réservation
-exports.updateEtatReservation = async (req, res) => {
-  const { id } = req.params;
-  const { reservation_status } = req.body;
-
-  if (!reservation_status) {
-    return res
-      .status(400)
-      .send({ message: "Le statut de réservation est requis." });
-  }
-
-  try {
-    const result = await updateReservationStatus(reservation_status, id);
-
-    if (result.affectedRows === 0) {
-      return res
-        .status(404)
-        .send({ message: "Réservation introuvable ou déjà traitée." });
-    }
-
-    if (reservation_status === "accepté") {
-      const reservation = await getReservationById(id);
-      await updateAvailabilityStatus(
-        reservation.Prestataire_id,
-        reservation.event_date_id
-      );
-    }
-
-    res.send({
-      message:
-        reservation_status === "accepté"
-          ? "Réservation acceptée et disponibilité mise à jour."
-          : "État de la réservation mis à jour.",
-    });
-  } catch (error) {
-    res.status(500).send({ error: error.message });
-  }
-};
+export default BookingCards;
