@@ -2,7 +2,7 @@ const mysql = require('mysql2/promise');
 require('dotenv').config({ path: '../.env' });
 
 
-const DATABASE_URL = process.env.DATABASE_URL || 'mysql://chirine:6hpqyuFd@localhost:3306/dz-event';
+const DATABASE_URL = process.env.DATABASE_URL || 'mysql://sql7759810:yMD1NuZE4l@sql7.freesqldatabase.com:3306/sql7759810';
 
 
 const db = mysql.createPool({
