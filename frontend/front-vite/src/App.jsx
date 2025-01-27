@@ -43,7 +43,7 @@ function App() {
           <Route path="/votreService/AddService" element={<AddService />} />
           <Route path="/CheckList" element={<CheckList />} />
           <Route path="/SearchPage" element={<SearchPage />} />
-          <Route path="/DetailedProfile" element={<DetailedProfile/>} />
+          <Route path="/DetailedProfile/:id" element={<DetailedProfile/>} />
         </Routes>
       
     </div>

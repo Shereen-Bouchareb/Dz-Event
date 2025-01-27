@@ -1,6 +1,6 @@
 import React from 'react'
 import Logo from './logo.png'
-
+import { Link } from 'react-router-dom';
 function Header() {
   return (
     <div style={{width:"100%"}}>
@@ -12,7 +12,7 @@ function Header() {
           <img src={Logo} style={{width:"200px" , height:"63px" , marginLeft:"20px"}}/>
         </div>
         <div className='headerTitle' style={{display:"flex" ,width:"25%", marginLeft:"13%" , alignItems:"center" , justifyContent:"space-between"}}>
-          <a style={{color:"#A6725A"}}><b>Home</b></a>
+         <Link to="/"> <a style={{color:"#A6725A"}}><b>Home</b></a></Link>
           <a style={{color:"#A6725A"}}><b>trouver prestataires</b></a>
           <a style={{color:"#A6725A"}}><b>vos réservations</b></a>
         </div>

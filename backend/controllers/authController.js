@@ -4,8 +4,8 @@ const userQueries = require('../models/authModel');
 
 // Sign up for a Prestataire
 exports.signupPrestataire = async (req, res) => {   
-   // console.log(req.body);
-    const { email, password, firstname, familyname, userBio, jobDescription, role , wilaya } = req.body;
+    console.log(req.body);
+    const { email, password, firstname, familyname, userBio, jobDescription, role ,wilaya   } =req.body ;
 
     try {
         // Check if the user already exists
@@ -17,9 +17,11 @@ exports.signupPrestataire = async (req, res) => {
 
         // Hash the password
         const hashedPassword = await bcrypt.hash(password, 10);
-
+        console.log(hashedPassword)
         // Insert new user into the prestataire table
+        console.log("got here ")
         await userQueries.insertPrestataire(email, hashedPassword, firstname, familyname, userBio, jobDescription, role ,wilaya);
+        console.log("check")
         res.status(201).json({ message: "Prestataire registered successfully" });
     } catch (error) {
         res.status(500).json({ error: "Server error", details: error.message });

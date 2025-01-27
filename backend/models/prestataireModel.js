@@ -2,21 +2,25 @@ const db = require('../config/db');
 
 exports.getPrestataireById = async (id) => {
     const query = `
-        SELECT 
+         SELECT
             p.Prestataire_id AS id,
             p.firstname,
             p.familyname,
             p.userBio,
-            p.Job_description,
+            p.job_description,
+            p.role,
+            p.wilaya,
             COALESCE(AVG(c.rating), 0) AS rating
-        FROM Prestataire p
+        FROM prestataire p
         LEFT JOIN services s ON s.Prestataire_id = p.Prestataire_id
         LEFT JOIN reserver r ON r.service_id = s.service_id
         LEFT JOIN commentaire c ON c.client_id = r.client_id
-        WHERE p.Prestataire_id = ?
-        GROUP BY p.Prestataire_id;
+        WHERE p.Prestataire_id = ? -- Filter by the provided ID
+        GROUP BY p.Prestataire_id, p.role, p.wilaya;
     `;
     const [rows] = await db.execute(query, [id]);
+    console.log(rows[0])
+    console.log(id)
     return rows[0]; // Retourne le premier résultat ou `undefined`
 };
 
@@ -136,18 +140,20 @@ exports.insertReservation = async (reservationData) => {
 
 exports.getAllPrestataire = async () => {
     const query = `
-        SELECT 
+        SELECT
             p.Prestataire_id AS id,
             p.firstname,
             p.familyname,
             p.userBio,
-            p.Job_description,
+            p.job_description,
+            p.role,
+            p.wilaya,
             COALESCE(AVG(c.rating), 0) AS rating
-        FROM Prestataire p
+        FROM prestataire p
         LEFT JOIN services s ON s.Prestataire_id = p.Prestataire_id
         LEFT JOIN reserver r ON r.service_id = s.service_id
         LEFT JOIN commentaire c ON c.client_id = r.client_id
-        GROUP BY p.Prestataire_id;
+        GROUP BY p.Prestataire_id, p.role, p.wilaya;
     `;
     const [rows] = await db.execute(query);
     return rows;

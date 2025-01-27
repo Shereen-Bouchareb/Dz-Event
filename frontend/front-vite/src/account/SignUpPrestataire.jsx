@@ -3,9 +3,11 @@ import { useNavigate } from "react-router-dom";
 import Account from "../assets/Account.png";
 import { Link } from "react-router-dom";
 import axios from "axios";
-// import { RiArrowDropDownLine } from "react-icons/ri";
+import Select from "react-select";
+import WilayasData from "../Profile/Wilayas.json";
 
 const SignUpPrestataire = () => {
+  const navigate = useNavigate();
   const [name, setName] = useState("");
   const [familyName, setFamilyName] = useState("");
   const [email, setEmail] = useState("");
@@ -14,13 +16,15 @@ const SignUpPrestataire = () => {
   const [service, setService] = useState("");
   const [description, setDescription] = useState("");
   const [bio, setBio] = useState("");
+  const [wilaya, setWilaya] = useState("");
   const [errName, setErrName] = useState("");
   const [errFamilyName, setErrFamilyName] = useState("");
   const [errEmail, setErrEmail] = useState("");
   const [errPassword, setErrPassword] = useState("");
   const [errConfirmPassword, setErrConfirmPassword] = useState("");
   const [errService, setErrService] = useState("");
-  const navigate = useNavigate()
+  const [errWilaya, setErrWilaya] = useState("");
+  const [apiError, setApiError] = useState("");
 
   const handelNameChange = (e) => {
     setName(e.target.value);
@@ -70,8 +74,12 @@ const SignUpPrestataire = () => {
   const handelBioChange = (e) => {
     setBio(e.target.value);
   };
+  const handelWilayaChange = (selectedOption) => {
+    setWilaya(selectedOption); // The selected option object is passed directly
+    setErrWilaya(""); // Clear error
+  };
 
-  const handelSubmit = async(e) => {
+  const handelSubmit = async (e) => {
     e.preventDefault();
 
     if (!name) {
@@ -103,30 +111,11 @@ const SignUpPrestataire = () => {
       setErrConfirmPassword("password incorrect");
     }
 
-    if(!service){
-        setErrService("required")
+    if (!service) {
+      setErrService("required");
     }
-    try {
-      const response = await axios.post(
-        "http://localhost:3000/api/signup/client",
-        {role: "Prestataire",
-          firstName: name,
-          lastName: familyName,
-          email: email,
-          password: password,
-          description: description,
-          bio : bio,
-          service: servicecd 
-        }
-      );
-      console.log("success")
-      if (response.status === 201){
-
-        navigate("/SearchPage")
-      }
-      clearForm();
-    } catch (error) {
-      console.error("error signing up: ", error.response?.data || error.message);
+    if (!wilaya) {
+      setErrWilaya("required");
     }
     if (
       name &&
@@ -137,7 +126,8 @@ const SignUpPrestataire = () => {
       passwordValidation(password) &&
       confirmPassword &&
       isPasswordMatch(password, confirmPassword) &&
-      service
+      service &&
+      wilaya
     ) {
       console.log("logging with name:", name);
       console.log("logging with familyName:", familyName);
@@ -147,10 +137,41 @@ const SignUpPrestataire = () => {
       console.log("service:", service);
       console.log("description:", description);
       console.log("bio:", bio);
+      console.log("wilaya:", wilaya.value);
+      try {
+        const response = await axios.post(
+          "http://localhost:3000/api/signup/prestataire",
+          {
+            firstname: name,
+            familyname: familyName,
+            email: email,
+            password: password,
+            role: service,
+            jobDescription: description,
+            userBio: bio,
+            wilaya: wilaya.value,
+          }
+        );
+        if (response.status === 201) {
+          navigate("/Profile");
+        }
+      } catch (err) {
+        if (err.response) {
+          console.error("Error Response:", err.response.data);
+          setApiError(
+            err.response.data.message || "Failed to register. Please try again."
+          );
+        } else if (err.request) {
+          console.error("No Response:", err.request);
+          setApiError("No response from server. Please check your connection.");
+        } else {
+          console.error("Error:", err.message);
+          setApiError("An unexpected error occurred. Please try again.");
+        }
+      }
       clearForm();
     }
   };
-
 
   const clearForm = () => {
     setName("");
@@ -161,6 +182,7 @@ const SignUpPrestataire = () => {
     setService("");
     setDescription("");
     setBio("");
+    setWilaya("");
   };
 
   return (
@@ -172,18 +194,18 @@ const SignUpPrestataire = () => {
         <form
           action=""
           method=""
-          className="flex justify-center items-center flex-col w-full h-full"
+          className="flex justify-center items-center flex-col w-full h-full m-0"
           onSubmit={handelSubmit}
         >
           <h1 className="text-main-brown text-4xl leading-[72px] font-bold ">
             Welcome Cher Prestataire
           </h1>
-          <div className="flex">
-            <div className="flex justify-center  flex-col ">
+          <div className="flex m-0">
+            <div className="flex  flex-col ">
               <div className="flex items-center">
                 <label
                   htmlFor="name"
-                  className="  text-[15px] font-medium leading-[30px] mr-3"
+                  className="  text-[15px] font-medium  mr-3"
                 >
                   First name <span className="text-red-600">*</span>
                 </label>
@@ -197,14 +219,14 @@ const SignUpPrestataire = () => {
                 onChange={handelNameChange}
                 // required
                 placeholder="Your First name"
-                className="w-[180px] h-[30px] p-[10px] gap-2 rounded-[5px] focus:outline-none shadow-[inset_0px_0px_4px_0px_rgba(0,0,0,0.25)]"
+                className="w-[180px] h-[30px] p-[5px] gap-2 rounded-[5px] focus:outline-none shadow-[inset_0px_0px_4px_0px_rgba(0,0,0,0.25)]"
               />
             </div>
             <div className="flex justify-center  flex-col ml-[35px]">
               <div className="flex items-center">
                 <label
                   htmlFor="familyName"
-                  className="  text-[15px] font-medium leading-[30px] mr-3"
+                  className="  text-[15px] font-medium  mr-3"
                 >
                   Family name <span className="text-red-600">*</span>
                 </label>
@@ -220,7 +242,7 @@ const SignUpPrestataire = () => {
                 onChange={handelFamilyChange}
                 // required
                 placeholder="Your Family name"
-                className="w-[180px] h-[30px] p-[10px] gap-2 rounded-[5px] focus:outline-none shadow-[inset_0px_0px_4px_0px_rgba(0,0,0,0.25)]"
+                className="w-[180px] h-[30px] p-[5px] gap-2 rounded-[5px] focus:outline-none shadow-[inset_0px_0px_4px_0px_rgba(0,0,0,0.25)]"
               />
             </div>
           </div>
@@ -228,7 +250,7 @@ const SignUpPrestataire = () => {
             <div className="flex items-center">
               <label
                 htmlFor="email"
-                className="  text-[15px] font-medium leading-[30px] mr-3"
+                className="  text-[15px] font-medium  mr-3"
               >
                 Your Email-Adress <span className="text-red-600">*</span>
               </label>
@@ -244,14 +266,38 @@ const SignUpPrestataire = () => {
 
               autoComplete="username"
               placeholder="Example: user@gmail.com "
-              className="w-[400px] h-[30px] p-[10px] gap-2 rounded-[5px] focus:outline-none shadow-[inset_0px_0px_4px_0px_rgba(0,0,0,0.25)]"
+              className="w-[400px] h-[30px] p-[5px] gap-2 rounded-[5px] focus:outline-none shadow-[inset_0px_0px_4px_0px_rgba(0,0,0,0.25)]"
+            />
+          </div>
+          <div className="flex flex-col m-1 justify-start">
+            <div className="flex">
+              <label
+                htmlFor="wilaya"
+                className="  text-[15px] font-medium  mr-3 "
+              >
+                Votre Wilaya
+              </label>
+              {errWilaya && <p className="text-red-500 text-xs">{errWilaya}</p>}
+            </div>
+
+            <Select
+              id="wilaya"
+              value={wilaya}
+              options={WilayasData.wilayas.map((wilaya) => ({
+                label: wilaya.nom,
+                value: wilaya.nom,
+                communes: wilaya.communes,
+              }))}
+              onChange={handelWilayaChange}
+              placeholder="Select a country"
+              className=" w-[400px]  shadow-[inset_0px_0px_4px_0px_rgba(0,0,0,0.25)] rounded-sm "
             />
           </div>
           <div className="flex justify-center  flex-col">
             <div className="flex items-center">
               <label
                 htmlFor="password"
-                className="  text-[15px] font-medium leading-[30px] mr-3 "
+                className="  text-[15px] font-medium  mr-3 "
               >
                 Your Password <span className="text-red-600">*</span>
               </label>
@@ -267,7 +313,7 @@ const SignUpPrestataire = () => {
               onChange={handelPasswordChange}
               // required
               placeholder="------------"
-              className="w-[400px] h-[30px]  p-[10px] gap-2 rounded-[5px] focus:outline-none shadow-[inset_0px_0px_4px_0px_rgba(0,0,0,0.25)]"
+              className="w-[400px] h-[30px]  p-[5px] gap-2 rounded-[5px] focus:outline-none shadow-[inset_0px_0px_4px_0px_rgba(0,0,0,0.25)]"
               autoComplete="current-password"
             />
             <div className="flex justify-between items-center mt-1">
@@ -280,7 +326,7 @@ const SignUpPrestataire = () => {
             <div className="flex items-center">
               <label
                 htmlFor="passwordConfirm"
-                className="  text-[15px] font-medium leading-[30px] mr-3 "
+                className="  text-[15px] font-medium mr-3 "
               >
                 Re-confirm your password <span className="text-red-600">*</span>
               </label>
@@ -295,72 +341,69 @@ const SignUpPrestataire = () => {
               onChange={handelConfirmPasswordChange}
               // required
               placeholder="------------"
-              className="w-[400px] h-[30px]  p-[10px] gap-2 rounded-[5px] focus:outline-none shadow-[inset_0px_0px_4px_0px_rgba(0,0,0,0.25)]"
+              className="w-[400px] h-[30px]  p-[5px] gap-2 rounded-[5px] focus:outline-none shadow-[inset_0px_0px_4px_0px_rgba(0,0,0,0.25)]"
               autoComplete="current-password"
             />
           </div>
           <div className="  flex flex-col  w-[400px] relative ">
-            <div className="flex items-center"><label
-              htmlFor="typeUser"
-              className="  text-[15px] font-medium leading-[30px] mr-3"
-            >
-              Votre Service <span className="text-red-600">*</span>
-            </label>
-            {errService && <p className="text-red-500 text-xs">{errService}</p>}
+            <div className="flex items-center">
+              <label
+                htmlFor="typeUser"
+                className="  text-[15px] font-medium  mr-3"
+              >
+                Votre Service <span className="text-red-600">*</span>
+              </label>
+              {errService && (
+                <p className="text-red-500 text-xs">{errService}</p>
+              )}
             </div>
-            
 
             <select
               id="typeUser"
-                value={service}
-                onChange={handelServiceChange}
-              //   className="w-[400px] h-[50px] p-[20px] gap-2 rounded-[5px] focus:outline-none shadow-[inset_0px_0px_4px_0px_rgba(0,0,0,0.25)]"
-              className=" relative w-[210px] h-[40px] p-[10px] mb-1  border rounded-md focus:outline-none  shadow-[inset_0px_0px_4px_0px_rgba(0,0,0,0.25)] "
+              value={service}
+              onChange={handelServiceChange}
+              className=" relative w-[210px] h-[40px] p-[5px] mb-1  border rounded-md focus:outline-none  shadow-[inset_0px_0px_4px_0px_rgba(0,0,0,0.25)] "
             >
               {/* appearance-none */}
               <option value="" disabled className="">
                 Selectionner votre service
               </option>
               <option value="photographer">photographer</option>
-              <option value="Chef">Chef</option>
-              <option value="Propriétaire">Propriétaire d'une salle</option>
+              <option value="chef">Chef</option>
+              <option value="Waiter">Waiter</option>
               <option value="serveur">serveur</option>
             </select>
-            {/* <span className="absolute w-4 h-3 left-[165px] top-[60%] transform -translate-y-1/2 text-black ">
-            <RiArrowDropDownLine size={30} />
-  </span> */}
 
             <textarea
-            value={description}
-            onChange={handelDescriptionChange}
+              value={description}
+              onChange={handelDescriptionChange}
               placeholder="Décrivez votre service de manière claire et attractive ..."
-              className="w-[400px] h-[70px] mb-1  p-[10px] gap-2 rounded-[5px] focus:outline-none shadow-[inset_0px_0px_4px_0px_rgba(0,0,0,0.25)]"
+              className="w-[400px] h-[50px] mb-1  p-[5px] gap-2 rounded-[5px] focus:outline-none shadow-[inset_0px_0px_4px_0px_rgba(0,0,0,0.25)]"
             />
             <input
-            
               type="text"
               value={bio}
               onChange={handelBioChange}
               placeholder="Entrer votre bio"
-              className="w-[400px] h-[30px]  p-[10px] gap-2 rounded-[5px] focus:outline-none shadow-[inset_0px_0px_4px_0px_rgba(0,0,0,0.25)]"
+              className="w-[400px] h-[30px]  p-[5px] gap-2 rounded-[5px] focus:outline-none shadow-[inset_0px_0px_4px_0px_rgba(0,0,0,0.25)]"
             />
           </div>
-          <div className="flex   flex-col">
-          <Link to='/Profile/EditProfile'>
+          <div className="flex flex-col mt-[10px]">
+            {apiError && <p className="text-red-500 text-xs">{apiError}</p>}
             <button
               type="submit"
-              className=" bg-main-brown text-white text-center font-bold w-[400px] h-[40px]  p-[10px] mt-[10px] gap-2 rounded-[5px] focus:outline-none shadow-[inset_0px_0px_4px_0px_rgba(0,0,0,0.25)]"
+              className=" bg-main-brown text-white text-center font-bold w-[400px] h-[40px]  p-[5px]  gap-2 rounded-[5px] focus:outline-none shadow-[inset_0px_0px_4px_0px_rgba(0,0,0,0.25)]"
             >
               Sign Up
             </button>
-            </Link>
-          <Link to='/LogIn'>
-            <a
-              href=""
-              className="text-main-brown text-[12px] font-medium text-center"
-            >
-              Already have an account?
-            </a>
+
+            <Link to="/LogIn">
+              <div
+                href=""
+                className="text-main-brown text-[12px] font-medium text-center"
+              >
+                Already have an account?
+              </div>
             </Link>
           </div>
         </form>

@@ -4,7 +4,7 @@ import './searchPrest.css'
 import { Button, Box, Modal } from '@mui/material';
 import ProfileCards from './ProfileCards'
 import Img from './photographer.jpg'
-
+import { Link } from "react-router-dom";
 function SearchPrest() {
 
   const [openWilayaChoise , setOpenWilayaChoise] = useState(false);
@@ -12,10 +12,16 @@ function SearchPrest() {
   const [choosedWilaya , setChoosedWilaya] = useState('');
   const [choosedRole , setChoosedRole] = useState('');
   const [filteredProfileCards , setFilteredProfileCards] = useState([]);
+  
+
+//const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlclR5cGUiOiJjbGllbnQiLCJpYXQiOjE3Mzc5MDQ0OTgsImV4cCI6MTc0MDQ5NjQ5OH0.uHFj3jD4-YvgSrbPh6zCidGJuczZNDJjrbywWrLaP7M"; // Replace this with the actual token
+
+// Store the token in local storage
+//localStorage.setItem('authToken', token);
 
 
 
-  const handleOpenWilayaChoisbe = () => setOpenWilayaChoise(true);
+  const handleOpenWilayaChoise = () => setOpenWilayaChoise(true);
   const handleCloseWilayaChoise = () => setOpenWilayaChoise(false);
 
   const handleOpenRoleChoise = () => setOpenRoleChoise(true)
@@ -45,65 +51,47 @@ function SearchPrest() {
   const [Roles , setRoles] = useState(['Photographe' , 'Caterer' , 'Venue Manager' , 'DJ' , 'Florist' ,'Event Planner' , 'Videographer' , 'Makeup Artist' , 'Hair Stylist' , 'Security' , 'Waiter' , 'Decorator' , 'Lighting' , 'Technician' , 'Sound Engineer' , 'Transporter' , 'Other'])
 
 
+  const useFetch = async () => {
+    try {
+      // Retrieve the token from local storage
+      const authToken = localStorage.getItem('token');
+
+      console.log("token",authToken)
+      if (!authToken) {
+        console.error("No token found. Please log in.");
+        return; // Exit the function if no token is found
+      }
+       const response = await fetch('http://localhost:3000/prestataires', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${authToken}`, // Use the retrieved token
+        },
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }   
+      const data = await response.json();
+      console.log("Fetched data:", data.prestataires);
+    /*   setprofileCard(data); // Update state with fetched data */
+    setprofileCard(data.prestataires);
+    setFilteredProfileCards(data.prestataires);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      // Optionally, set an error state to display a message to the user
+    }
+  };
+
+
+
+
+
+  useEffect(() => {
+    useFetch();
+  }, []);
+
   const [Profilecards , setprofileCard] = useState([
-    {
-        id : "1",
-        ProfilePic :Img , 
-        PrestataireName : "Mohammed Loai",
-        Bio : "your photographer is here i wanna be a part in your events lets make it like a dream",
-        rating : "4,9",
-        role : "Photographe",
-        wilaya : "Skikda",
-        commune :"ville" 
-    },
-    {
-        id : "2",
-        ProfilePic :Img , 
-        PrestataireName : "Mohammed Loai",
-        Bio : "your photographer is here i wanna be a part in your events lets make it like a dream",
-        rating : "4,9",
-        role : "Photographe",
-        wilaya : "Skikda",
-        commune :"ville"  
-    },
-    {
-        id : "3",
-        ProfilePic :Img , 
-        PrestataireName : "Mohammed Loai",
-        Bio : "your photographer is here i wanna be a part in your events lets make it like a dream",
-        rating : "4,9",
-        role : "Caterer",
-        wilaya : "Skikda",
-        commune :"ville"  
-    },
-    {
-        id : "4",
-        ProfilePic :Img , 
-        PrestataireName : "Mohammed Loai",
-        Bio : "your photographer is here i wanna be a part in your events lets make it like a dream",
-        rating : "4,9",
-        role : "Caterer",
-        wilaya : "Skikda",
-        commune :"ville" 
-    },{
-        id : "5",
-        ProfilePic :Img , 
-        PrestataireName : "Mohammed Loai",
-        Bio : "your photographer is here i wanna be a part in your events lets make it like a dream",
-        rating : "4,9",
-        role : "DJ",
-        wilaya : "Jijel",
-        commune :"ville" 
-    },{
-        id : "6",
-        ProfilePic :Img , 
-        PrestataireName : "Mohammed Loai",
-        Bio : "your photographer is here i wanna be a part in your events lets make it like a dream",
-        rating : "4,9",
-        role : "DJ",
-        wilaya : "Batna",
-        commune :"ville" 
-    },{
+   {
         id : "7",
         ProfilePic :Img , 
         PrestataireName : "Mohammed Loai",
@@ -113,7 +101,7 @@ function SearchPrest() {
         wilaya : "Annaba",
         commune :"ville" 
     }
-])
+]) 
 
 useEffect(() => {
   const filteredCards = choosedWilaya
@@ -155,25 +143,28 @@ setFilteredProfileCards(filteredCards);
             <span><FaAngleDown className='iconCss' /></span>
         </div>
       </div>
-      <div style={{display:"flex" , flexWrap:"wrap",gap:"40px" , justifyContent:"center" , alignItems:"center" , marginBottom:"400px" }}>
+      { <div style={{display:"flex" , flexWrap:"wrap",gap:"40px" , justifyContent:"center" , alignItems:"center" , marginBottom:"400px" }}>
               {filteredProfileCards.map((profileInfo , index) => {
                   return(
-                      <div key={index} style={{}}>
+                    
+                    <div key={index} style={{}}>
                           <ProfileCards 
+                          key={index}
                               id = {profileInfo.id}
-                              profilePic={profileInfo.ProfilePic}
-                              bio={profileInfo.Bio}
-                              prestName={profileInfo.PrestataireName}
-                              rating={profileInfo.rating}
+                              profilePic={Img}
+                              bio={profileInfo.userBio}
+                              firstName={profileInfo.firstname}
+                              famillyName={profileInfo.familyname}
+                              rating={Math.floor(Math.random() * 5)}
                               role={profileInfo.role}
                               wilaya={profileInfo.wilaya}
-                              commune={profileInfo.commune}
+                            
                           />
                       </div>
                   )
               })}
-          </div>
-          </div>
+          </div>}
+          </div> 
       <Modal open={openWilayaChoise} onClose={handleCloseWilayaChoise} aria-labelledby="simple-modal-title" aria-describedby="simple-modal-description">
         <Box sx={{
             position: 'absolute',

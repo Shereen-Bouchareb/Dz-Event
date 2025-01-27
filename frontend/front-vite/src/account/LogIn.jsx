@@ -2,8 +2,11 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import Account from "../assets/Account.png";
+import axios from "axios";
 
 const LogIn = () => {
+  const navigate = useNavigate();
+  // const [apiError, setApiError] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
@@ -37,7 +40,7 @@ const LogIn = () => {
     setErrUserRole("");
   };
 
-  const handelSubmit = (e) => {
+  const handelSubmit = async (e) => {
     e.preventDefault();
 
     if (!email) {
@@ -59,13 +62,44 @@ const LogIn = () => {
     if (email && emailValidation(email) && password && userRole) {
       console.log("logging with email:", email);
       console.log("logging with password:", password);
+      console.log(userRole);
       console.log("Remember me:", rememberMe);
+
+      try {
+        const response = await axios.post(
+          "http://localhost:3000/api/login",
+          {
+            email,
+            password,
+            userType: userRole,
+           
+          }, 
+          {
+            headers: {
+              "Content-Type": "application/json", // Add this if required
+            },
+          }
+        );  
+       
+        if (response.status === 200) {
+          localStorage.setItem("token", response.data.token);
+          if (userRole ==="client") {
+            navigate("/SearchPage");
+          }else {
+            navigate("/Profile");
+          }
+          
+        }
+      } catch (err) {
+        console.log(err.message);
+      }
       clearForm();
     }
   };
   const clearForm = () => {
     setEmail("");
     setPassword("");
+    setUserRole("");
   };
 
   return (
@@ -85,18 +119,16 @@ const LogIn = () => {
           </h1>
           <div className="flex flex-col  w-[400px] relative ">
             <div className="flex items-center">
-            <label
-              htmlFor="typeUser"
-              className="  text-[15px] font-medium leading-[30px] mr-3"
-              
-            >
-              Your Role
-            </label>
-            {errUserRole && (
-              <p className="text-red-500 text-xs">{errUserRole}</p>
-            )}
+              <label
+                htmlFor="typeUser"
+                className="  text-[15px] font-medium leading-[30px] mr-3"
+              >
+                Your Role
+              </label>
+              {errUserRole && (
+                <p className="text-red-500 text-xs">{errUserRole}</p>
+              )}
             </div>
-            
 
             <select
               id="typeUser"
@@ -106,11 +138,11 @@ const LogIn = () => {
               className=" relative w-[400px] h-[50px] p-[10px]   border rounded-md focus:outline-none  shadow-[inset_0px_0px_4px_0px_rgba(0,0,0,0.25)] "
             >
               {/* appearance-none */}
-              <option value="" disabled >
-                <span style={{color:"#9F9F9F"}}>Select your role</span>
+              <option value="" disabled>
+                <span style={{ color: "#9F9F9F" }}>Select your role</span>
               </option>
-              <option value="Client">Client</option>
-              <option value="Prestataire">Prestataire</option>
+              <option value="client">Client</option>
+              <option value="prestataire">Prestataire</option>
             </select>
             {/* <span className="absolute w-4 h-3 left-[165px] top-[60%] transform -translate-y-1/2 text-black ">
             <RiArrowDropDownLine size={30} />
@@ -182,14 +214,12 @@ const LogIn = () => {
           </div>
 
           <div className="flex   flex-col">
-          <Link to='/SearchPage'>
             <button
               type="submit"
               className=" bg-main-brown text-white text-center font-bold w-[400px] h-[50px]  p-[10px] mt-[30px] gap-2 rounded-[5px] focus:outline-none shadow-[inset_0px_0px_4px_0px_rgba(0,0,0,0.25)]"
             >
               LogIn
             </button>
-            </Link>
 
             <Link
               to="/SignUp"

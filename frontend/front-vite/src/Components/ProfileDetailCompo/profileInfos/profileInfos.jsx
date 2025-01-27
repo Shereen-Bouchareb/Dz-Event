@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+
 import Img from './photographer.jpg'
 import { FaRegStar } from "react-icons/fa6";
 import './profileInfos.css';
@@ -10,13 +11,14 @@ import CommenterEtNoter from '../commentRatingPopups/Commentrating'
 
 /**lzm tjib le nom et le texte de description et le role du prestataire + le id de prestataire pour le entrer comme un parameter au Averagerating component */
  /** AverageRating component lzm da5alalha paramétre li howa le prestataire id */
-function ProfileInfos() {
+function ProfileInfos({data}) {
 
   const [openDevis , setOpenDevis] = useState(false)
- 
+  console.log("here",data)
 
   const handleOpenDevis = () => setOpenDevis(true);
   const handleCloseDevis = () => setOpenDevis(false);
+
 
   
   return (
@@ -26,10 +28,10 @@ function ProfileInfos() {
       </div>
 
       <div className='profileInfoContainer'>
-        <h2 >Prestataire name</h2>
-        <p className='description'>Passionné par l'art de capturer l'instant, je suis photographe spécialisé dans [portrait/paysage/mariages/événements, etc.]. Avec une approche créative et attentive aux détails, je transforme des moments éphémères en souvenirs intemporels. Mon objectif est de raconter des histoires uniques à travers chaque cliché, tout en offrant une expérience chaleureuse et professionnelle. Basé à Skikda, je suis disponible pour des projets locaux et internationaux. Travaillons ensemble pour immortaliser vos moments précieux !</p>
+        <h2 style={{marginRight:"2px"}}>{data.familyname}-{data.firstname}</h2>
+        <p className='description'>{data.job_description}</p>
         <div className='theRole'>
-          <h3 style={{fontSize:"12px" , color:"#F0E5CF"}}>Photographer</h3>
+          <h3 style={{fontSize:"12px" , color:"#F0E5CF"}}>{data.role}</h3>
         </div>
         <button className='devisButton' onClick={handleOpenDevis}><b>DEMANDER UN DEVIS</b></button>
         <CommenterEtNoter/>
