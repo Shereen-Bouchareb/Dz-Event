@@ -7,8 +7,6 @@ import { FaRegTrashAlt } from "react-icons/fa";
 const CheckList = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [tasks, setTasks] = useState([]); 
-  
-
   const [newTask, setNewTask] = useState("");
   const sidebarRef = useRef(null);
 
@@ -35,15 +33,15 @@ const CheckList = () => {
 
   // Fetch tasks from the backend
   useEffect(() => {
-    
     const fetchTasks = async () => {
       const token = localStorage.getItem("token");
       try {
-        const response = await axios.get("http://localhost:3000/checklistTasks" , {
+        const response = await axios.get("http://localhost:3000/checklistTasks", {
           headers: { Authorization: `Bearer ${token}` },
-        }); // Adjust the endpoint accordingly
-        setTasks(response.data.checklistTasks); // Access the checklistTasks property
-    console.log(response.data.checklistTasks);
+        });
+        // Log the response to see the data structure
+        console.log("Fetched tasks:", response.data);
+        setTasks(response.data.checklistTasks || []);
       } catch (error) {
         console.error("Error fetching tasks:", error);
       }
@@ -51,39 +49,49 @@ const CheckList = () => {
 
     fetchTasks();
   }, []);
-  
 
   const handleAddTask = async () => {
     const token = localStorage.getItem("token");
-    console.log(newTask.trim())
     if (newTask.trim()) {
       try {
-        // Add the task to the backend
-        await axios.post("http://localhost:3000/checklistTasks", { task_name: newTask},
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }); // Adjust the endpoint and payload
-        setTasks((prevTasks) => [...prevTasks, newTask.trim()]);
+        const response = await axios.post(
+          "http://localhost:3000/checklistTasks",
+          { task_name: newTask.trim() },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        // Log the response to see the data structure
+        console.log("Add task response:", response.data);
+        
+        // Fetch tasks again after adding new task
+        const fetchResponse = await axios.get("http://localhost:3000/checklistTasks", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setTasks(fetchResponse.data.checklistTasks || []);
         setNewTask("");
       } catch (error) {
         console.error("Error adding task:", error);
       }
     }
   };
-  const handleDeleteTask = async (taskId) => {
-    const token = localStorage.getItem("token");
-    try {
-      await axios.delete(`http://localhost:3000/checklistTasks/`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      setTasks(prevTasks => prevTasks.filter(task => task.id !== taskId));
-    } catch (error) {
-      console.error("Error deleting task:", error);
-    }
-  };
 
+  // const handleDeleteTask = async (taskId) => {
+  //   const token = localStorage.getItem("token");
+  //   try {
+  //     await axios.delete(`http://localhost:3000/checklistTasks/${taskId}`, {
+  //       headers: { Authorization: `Bearer ${token}` },
+  //     });
+  //     setTasks(prevTasks => prevTasks.filter(task => task.id !== taskId));
+  //   } catch (error) {
+  //     console.error("Error deleting task:", error);
+  //   }
+  // };
+  const handleDeleteTask = (index) => {
+    setTasks((prevTasks) => prevTasks.filter((_, i) => i !== index));
+  };
   return (
     <div className="h-screen flex relative">
       {/* SIDEBAR SIDE START */}
@@ -130,9 +138,9 @@ const CheckList = () => {
           </button>
         </div>
         <div className="text-text-brown mt-[60px]">
-          {tasks.map((task, index) => (
+          {Array.isArray(tasks) && tasks.map((task, index) => (
             <div key={index} className="flex justify-between m-3">
-              <p>{task}</p>
+              <p>{typeof task === 'string' ? task : task.task_name || 'Unnamed Task'}</p>
               <FaRegTrashAlt
                 onClick={() => handleDeleteTask(index)}
                 className="cursor-pointer text-red-600 hover:text-red-800"

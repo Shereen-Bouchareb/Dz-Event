@@ -87,10 +87,10 @@ const SideBar = () => {
           </NavLink>
         </div>
       </div>
-      <div>
+      <div >
         <Translation />
       </div>
-      <div className="absolute bottom-0 flex text-main-brown    mt-[45px]  p-[15px] w-full hover:bg-secondary-beige border-t border-main-grey">
+      <div className="absolute bottom-0 flex text-main-brown    mt-[75px]  p-[15px] w-full hover:bg-secondary-beige border-t border-main-grey">
         <IoMdLogOut size={20} />
         <p className="ml-[20px]">Log Out</p>
       </div>
