@@ -54,6 +54,20 @@ const profile = require('../models/profileModel');
     }
   };
 
+  exports.getProfile = async (req, res) => {
+    const prestataire_id = req.user.id; // Par exemple, depuis le paramètre de l'URL
+  
+    try {
+      const profile = await Profile.getProfile(prestataire_id);
+      if (!profile) {
+        return res.status(404).json({ error: 'Profil non trouvé' }); // Si aucun profil n'est trouvé
+      }
+      res.json(profile);
+    } catch (error) {
+      res.status(500).json({ error: `Erreur lors de la récupération du profil : ${error.message}` });
+    }
+  };
+
 
 
 

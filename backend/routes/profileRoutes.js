@@ -131,4 +131,75 @@ router.post('/', authenticateToken, authorizeRole(['prestataire']), profileContr
  */
 router.put('/', authenticateToken, authorizeRole(['prestataire']), profileController.editPrestataireProfile);
 
+/**
+ * @swagger
+ * path:
+ *  /profile:
+ *    get:
+ *      summary: Récupérer le profil de l'utilisateur connecté
+ *      description: Cette route permet de récupérer les informations du profil du prestataire connecté grâce au token d'authentification.
+ *      security:
+ *        - BearerAuth: []
+ *      tags:
+ *        - Profil
+ *      responses:
+ *        '200':
+ *          description: Profil récupéré avec succès
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                properties:
+ *                  Prestataire_id:
+ *                    type: integer
+ *                    example: 1
+ *                  firstname:
+ *                    type: string
+ *                    example: John
+ *                  familyname:
+ *                    type: string
+ *                    example: Doe
+ *                  userBio:
+ *                    type: string
+ *                    example: "Développeur web avec 5 ans d'expérience."
+ *                  job_description:
+ *                    type: string
+ *                    example: "Développeur full-stack spécialisé en Node.js et React."
+ *                  profile_pic_url:
+ *                    type: string
+ *                    example: "https://example.com/profile.jpg"
+ *        '401':
+ *          description: Non autorisé (token invalide ou expiré)
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                properties:
+ *                  error:
+ *                    type: string
+ *                    example: "Token invalide ou non fourni"
+ *        '403':
+ *          description: Accès interdit (l'utilisateur n'est pas un prestataire)
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                properties:
+ *                  error:
+ *                    type: string
+ *                    example: "Accès interdit"
+ *        '500':
+ *          description: Erreur interne du serveur
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                properties:
+ *                  error:
+ *                    type: string
+ *                    example: "Erreur lors de la récupération du profil"
+ */
+
+
+router.get('/', authenticateToken, authorizeRole(['prestataire']), profileController.getProfile);
 module.exports = router;

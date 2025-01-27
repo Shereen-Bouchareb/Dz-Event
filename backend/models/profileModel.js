@@ -52,8 +52,19 @@ const editPrestataireProfile = async (prestataire_id, data) => {
   }
 };
 
+const getProfile = async (prestataire_id) => {
+  const query = 'SELECT * FROM prestataire WHERE Prestataire_id = ?';
+  try {
+    const [rows] = await db.promise().query(query, [prestataire_id]);
+    return rows[0]; // Retourne le premier résultat (le profil)
+  } catch (error) {
+    throw new Error(`Erreur lors de la récupération du profil : ${error.message}`);
+  }
+};
+
 module.exports = { 
   getPrestatairePictures,
   addPrestatairePicture,
-  editPrestataireProfile
+  editPrestataireProfile,
+  getProfile
 };
