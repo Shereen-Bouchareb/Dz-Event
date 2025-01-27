@@ -6,6 +6,67 @@ const authorizeRole = require('../middleware/authorizeRole');
 
 /**
  * @swagger
+ * components:
+ *   schemas:
+ *     Comment:
+ *       type: object
+ *       required:
+ *         - content
+ *         - rating
+ *       properties:
+ *         comment_id:
+ *           type: integer
+ *           description: ID unique du commentaire
+ *           example: 1
+ *         created_at:
+ *           type: string
+ *           format: date-time
+ *           description: Date et heure de la création du commentaire
+ *           example: "2025-01-25T14:48:00.000Z"
+ *         content:
+ *           type: string
+ *           description: Contenu du commentaire
+ *           example: "Excellent service!"
+ *         rating:
+ *           type: number
+ *           format: float
+ *           description: Note donnée au service (de 1 à 5)
+ *           example: 4.8
+ *         firstName:
+ *           type: string
+ *           description: Prénom de la personne ayant laissé le commentaire
+ *           example: "fatiha"
+ *         familyName:
+ *           type: string
+ *           description: Nom de famille de la personne ayant laissé le commentaire
+ *           example: "baloul"
+ *         pictures:
+ *           type: array
+ *           description: Liste des images liées au commentaire
+ *           items:
+ *             type: object
+ *             properties:
+ *               picture_id:
+ *                 type: integer
+ *                 description: ID unique de l'image
+ *                 example: 1
+ *               url:
+ *                 type: string
+ *                 description: URL de l'image
+ *                 example: "http://example.com/picture.jpg"
+ *               uploaded_at:
+ *                 type: string
+ *                 format: date-time
+ *                 description: Date d'upload de l'image
+ *                 example: "2025-01-25T14:48:00.000Z"
+ *         prestataire_id:
+ *           type: integer
+ *           description: ID du prestataire pour lequel le commentaire a été laissé
+ *           example: 123
+ */
+
+/**
+ * @swagger
  * /api/comments:
  *   get:
  *     summary: Retrieve comments for a specific Prestataire
@@ -32,28 +93,7 @@ const authorizeRole = require('../middleware/authorizeRole');
  *                 comments:
  *                   type: array
  *                   items:
- *                     type: object
- *                     properties:
- *                       comment_id:
- *                         type: integer
- *                         example: 1
- *                       created_at:
- *                         type: string
- *                         format: date-time
- *                         example: "2025-01-25T14:48:00.000Z"
- *                       content:
- *                         type: string
- *                         example: "Excellent service!"
- *                       rating:
- *                         type: number
- *                         format: float
- *                         example: 4.8
- *                       firstName:
- *                         type: string
- *                         example: "fatiha"
- *                       familyName:
- *                         type: string
- *                         example: "baloul"
+ *                     $ref: '#/components/schemas/Comment'  # Référence au schéma Comment défini dans "components"
  *       401:
  *         description: Unauthorized - Token missing or invalid.
  *       403:
@@ -61,7 +101,6 @@ const authorizeRole = require('../middleware/authorizeRole');
  *       500:
  *         description: Internal server error.
  */
-router.get('/',authenticateToken,authorizeRole(['prestataire']),commentsController.getPrestataireComments);
+router.get('/', authenticateToken, authorizeRole(['prestataire']), commentsController.getPrestataireComments);
 
 module.exports = router;
-

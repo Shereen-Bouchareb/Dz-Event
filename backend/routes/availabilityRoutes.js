@@ -9,7 +9,7 @@ const authorizeRole = require('../middleware/authorizeRole');
  * /availability:
  *   get:
  *     summary: Get available timeslots for a prestataire
- *     description: Get the list of available timeslots for the authenticated prestataire (only status=available)
+ *     description: Get the list of available timeslots for the authenticated prestataire (only status=Available)
  *     security:
  *       - BearerAuth: []
  *     responses:
@@ -22,20 +22,22 @@ const authorizeRole = require('../middleware/authorizeRole');
  *               items:
  *                 type: object
  *                 properties:
- *                   availability_id:
+ *                   Dispo_id:
  *                     type: integer
  *                     example: 1
- *                   start_time:
+ *                   date:
  *                     type: string
- *                     format: date-time
- *                     example: "2025-02-01T09:00:00Z"
- *                   end_time:
- *                     type: string
- *                     format: date-time
- *                     example: "2025-02-01T12:00:00Z"
+ *                     format: date
+ *                     example: "2025-02-01"
  *                   status:
  *                     type: string
- *                     example: "available"
+ *                     enum:
+ *                       - "Available"
+ *                       - "Unavailable"
+ *                     example: "Available"
+ *                   Prestataire_id:
+ *                     type: integer
+ *                     example: 1
  *       401:
  *         description: Unauthorized
  *       500:
@@ -58,17 +60,16 @@ router.get('/', authenticateToken, authorizeRole(['prestataire']), availabilityC
  *           schema:
  *             type: object
  *             properties:
- *               start_time:
+ *               date:
  *                 type: string
- *                 format: date-time
- *                 example: "2025-02-01T09:00:00Z"
- *               end_time:
- *                 type: string
- *                 format: date-time
- *                 example: "2025-02-01T12:00:00Z"
+ *                 format: date
+ *                 example: "2025-02-01"
  *               status:
  *                 type: string
- *                 example: "available"
+ *                 enum:
+ *                   - "Available"
+ *                   - "Unavailable"
+ *                 example: "Available"
  *     responses:
  *       201:
  *         description: Availability added successfully
@@ -77,7 +78,7 @@ router.get('/', authenticateToken, authorizeRole(['prestataire']), availabilityC
  *             schema:
  *               type: object
  *               properties:
- *                 availability_id:
+ *                 Dispo_id:
  *                   type: integer
  *                   example: 1
  *       400:
@@ -102,7 +103,7 @@ router.post('/', authenticateToken, authorizeRole(['prestataire']), availability
  *           schema:
  *             type: object
  *             properties:
- *               availability_id:
+ *               Dispo_id:
  *                 type: integer
  *                 example: 1
  *     responses:

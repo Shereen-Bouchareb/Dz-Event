@@ -1,23 +1,22 @@
-const prestataireController = require('../models/prestataireModel');
+const prestataireModel = require('../models/prestataireModel');
 
-// Récupérer tous les prestataires
-exports.getAllPrestataire = async (_, res) => {
+// getAllPrestataire
+exports.getAllPrestataire = async (req, res) => {
     try {
-        const prestataires = await prestataireController.getAllPrestataire(); // Récupérer tous les prestataires
-        res.status(200).json({ prestataires }); // Retourne les prestataires
+        const prestataires = await prestataireModel.getAllPrestataire();
+        res.status(200).json({ prestataires });
     } catch (err) {
         console.error('Erreur lors de la récupération des prestataires :', err.message);
         res.status(500).json({ message: 'Erreur interne du serveur.' });
     }
 };
 
-
-// Récupérer un prestataire par ID (utilisé dans l'URL)
+// getPrestataireById
 exports.getPrestataireById = async (req, res) => {
-    const prestataireId = req.params.prestataireId; // Récupérer l'ID du prestataire depuis les paramètres
+    const { prestataireId } = req.params;
 
     try {
-        const prestataire = await prestataireController.getPrestataireById(prestataireId); // Appel au modèle
+        const prestataire = await prestataireModel.getPrestataireById(prestataireId);
 
         if (!prestataire) {
             return res.status(404).json({ message: 'Prestataire non trouvé.' });
@@ -30,31 +29,18 @@ exports.getPrestataireById = async (req, res) => {
     }
 };
 
-// Récupérer les commentaires d'un prestataire
-exports.getPrestataireCommentsByClient = async (req, res) => {
-    const prestataireId = req.params.prestataireId; // ID du prestataire depuis les paramètres
-
-    try {
-        const comments = await prestataireController.getPrestataireCommentsByClient(prestataireId);
-        res.status(200).json({ comments });
-    } catch (err) {
-        console.error('Erreur lors de la récupération des commentaires :', err.message);
-        res.status(500).json({ message: 'Erreur interne du serveur.' });
-    }
-};
-
-// Ajouter un commentaire pour un prestataire
+// submitComment
 exports.submitComment = async (req, res) => {
-    const prestataireId = req.params.prestataireId; // ID du prestataire depuis les paramètres
-    const { content, rating } = req.body; // Contenu et note du commentaire
-    const clientId = req.user.clientId; // ID du client depuis le token
+    const { prestataireId } = req.params;
+    const { content, rating } = req.body;
+    const clientId = req.user?.id;
 
     if (!content || rating === undefined) {
         return res.status(400).json({ message: 'Le contenu et la note sont requis.' });
     }
 
     try {
-        const result = await prestataireController.submitComment(prestataireId, rating, content, clientId);
+        const result = await prestataireModel.submitComment(prestataireId, rating, content, clientId);
         res.status(201).json({ message: 'Commentaire ajouté avec succès.', commentId: result.insertId });
     } catch (err) {
         console.error('Erreur lors de l\'ajout du commentaire :', err.message);
@@ -62,73 +48,110 @@ exports.submitComment = async (req, res) => {
     }
 };
 
-// Mettre à jour le rating d'un commentaire spécifique
-exports.updateRating = async (req, res) => {
-    const { commentId } = req.params; // ID du commentaire
-    const { rating } = req.body; // Nouvelle note
-
-    if (rating === undefined || rating < 0 || rating > 5) {
-        return res.status(400).json({ message: "La note doit être comprise entre 0 et 5." });
-    }
+// getPrestataireCommentsByClient
+exports.getPrestataireCommentsByClient = async (req, res) => {
+    const { prestataireId } = req.params;
 
     try {
-        const result = await prestataireController.updateRating(commentId, rating);
-        if (result.affectedRows === 0) {
-            return res.status(404).json({ message: "Commentaire non trouvé." });
-        }
-
-        return res.status(200).json({ message: "Rating du commentaire mis à jour avec succès.", newRating: rating });
-    } catch (error) {
-        console.error("Erreur :", error.message);
-        return res.status(500).json({ message: "Erreur serveur." });
-    }
-};
-
-// Récupérer le rating moyen de tous les prestataires
-exports.getAverageRating = async (_, res) => {
-    try {
-        const averageRating = await prestataireController.getAverageRating();
-        return res.status(200).json({ averageRating });
-    } catch (error) {
-        console.error("Erreur :", error.message);
-        return res.status(500).json({ message: "Erreur serveur." });
-    }
-};
-
-// Récupérer les services d'un prestataire
-exports.getServicesByPrestataire = async (req, res) => {
-    const prestataireId = req.params.prestataireId; // ID du prestataire depuis les paramètres
-
-    try {
-        const services = await prestataireController.getPrestataireServicesByClient(prestataireId);
-        res.status(200).json({ services });
-    } catch (error) {
-        console.error("Erreur lors de la récupération des services :", error.message);
-        res.status(500).json({ message: "Erreur serveur." });
-    }
-};
-
-// Récupérer toutes les photos
-exports.getPrestataireGalleryByClient = async (req, res) => {
-    const prestataireId = req.params.prestataireId; // ID du prestataire depuis les paramètres
-
-    try {
-        const photos = await prestataireController.getPrestataireGalleryByClient(prestataireId);
-        res.status(200).json({ photos });
-    } catch (error) {
-        console.error('Erreur lors de la récupération des photos :', error);
+        const comments = await prestataireModel.getPrestataireCommentsByClient(prestataireId);
+        res.status(200).json({ comments });
+    } catch (err) {
+        console.error('Erreur lors de la récupération des commentaires :', err.message);
         res.status(500).json({ message: 'Erreur interne du serveur.' });
     }
 };
 
-// Exporter directement les fonctions
-module.exports = {
-    getAllPrestataire,
-    getPrestataireById,
-    getPrestataireCommentsByClient,
-    submitComment,
-    updateRating,
-    getAverageRating,
-    getServicesByPrestataire,
-    getPrestataireGalleryByClient
+// getPrestataireServicesByClient
+exports.getPrestataireServicesByClient = async (req, res) => {
+    const { prestataireId } = req.params;
+
+    try {
+        const services = await prestataireModel.getPrestataireServicesByClient(prestataireId);
+        res.status(200).json({ services });
+    } catch (err) {
+        console.error('Erreur lors de la récupération des services :', err.message);
+        res.status(500).json({ message: 'Erreur interne du serveur.' });
+    }
+};
+
+// getPrestataireGalleryByClient
+exports.getPrestataireGalleryByClient = async (req, res) => {
+    const { prestataireId } = req.params;
+
+    try {
+        const photos = await prestataireModel.getPrestataireGalleryByClient(prestataireId);
+        res.status(200).json({ photos });
+    } catch (err) {
+        console.error('Erreur lors de la récupération des photos :', err.message);
+        res.status(500).json({ message: 'Erreur interne du serveur.' });
+    }
+};
+
+// getReservationFormByClient
+exports.getReservationFormByClient = async (req, res) => {
+    const { prestataireId } = req.params;
+
+    try {
+        const tasks = await prestataireModel.getCheckListTasks(prestataireId);
+        res.status(200).json({ tasks });
+    } catch (err) {
+        console.error('Erreur lors de la récupération des tâches de la checklist :', err.message);
+        res.status(500).json({
+            message: 'Erreur interne du serveur.',
+            error: err.message
+        });
+    }
+};
+
+// submitReservationFormByClient
+exports.submitReservationFormByClient = async (req, res) => {
+    const { prestataireId, serviceId } = req.params;
+    const { address, willaya, num_tel, eventDate } = req.body;
+    const clientId = req.user?.id;
+    const createdAt = new Date();
+    const reservedAt = new Date();
+    const reservationStatus = 'en attente';
+
+    if (!address || !willaya || !num_tel || !eventDate) {
+        return res.status(400).json({
+            message: 'Tous les champs (address, willaya, num_tel, eventDate) sont requis.'
+        });
+    }
+
+    try {
+        // Insérer la date de l'événement
+        const eventDateId = await prestataireModel.insertEventDate(eventDate);
+
+        // Insérer dans ReservationForm
+        const reservationFormResult = await prestataireModel.submitReservationForm({
+            clientId,
+            address,
+            willaya,
+            num_tel,
+            createdAt
+        });
+
+        // Insérer dans Reserver
+        await prestataireModel.insertReservation({
+            serviceId,
+            clientId,
+            eventDateId,
+            reservedAt,
+            reservationStatus
+        });
+
+        res.status(201).json({
+            message: 'Formulaire de réservation soumis avec succès.',
+            data: {
+                reservationFormId: reservationFormResult.formId,
+                eventDateId
+            }
+        });
+    } catch (err) {
+        console.error('Erreur lors de la soumission du formulaire de réservation :', err.message);
+        res.status(500).json({
+            message: 'Erreur interne du serveur.',
+            error: err.message
+        });
+    }
 };

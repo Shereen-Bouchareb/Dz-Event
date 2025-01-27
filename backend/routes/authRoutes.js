@@ -31,7 +31,7 @@ const authController = require('../controllers/authController'); // Importing th
  *                 example: "Azouaou"
  *               password:
  *                 type: string
- *                 example: "SecurePassword123"
+ *                 example: "SecurePassword123"   # Indicating plaintext password (will be hashed before storage)
  *               Gmail_ad:
  *                 type: string
  *                 format: email

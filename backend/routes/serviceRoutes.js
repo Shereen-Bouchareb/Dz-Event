@@ -28,6 +28,7 @@ const authorizeRole = require('../middleware/authorizeRole');
  *           example: "Service complet de photographie pour les mariages, incluant un album photo."
  *         price:
  *           type: number
+ *           format: float
  *           description: Prix du service
  *           example: 1500.00
  *         Prestataire_id:
@@ -146,4 +147,3 @@ router.post('/', authenticateToken, authorizeRole(['prestataire']), serviceContr
 router.delete('/', authenticateToken, authorizeRole(['prestataire']), serviceController.deletePrestataireService);
 
 module.exports = router;
-
