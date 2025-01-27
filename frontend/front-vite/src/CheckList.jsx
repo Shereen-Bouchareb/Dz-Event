@@ -1,17 +1,13 @@
 import { useState, useEffect, useRef } from "react";
+import axios from "axios";
 import SideBar from "./ComponentsZ/SideBar";
 import { TiThMenu } from "react-icons/ti";
 import { FaRegTrashAlt } from "react-icons/fa";
 
 const CheckList = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [tasks, setTasks] = useState([
-    "Courts métrages ou montage vidéo résumant l’événement.",
-    "Installation d'éclairages spéciaux pour des photos glamour.",
-    "Création d'un effet cinématique ou vintage sur les photos.",
-    "Vidéo en coulisses ('Behind the scenes').",
-    "Courts métrages ou montage vidéo résumant l’événement.",
-  ]); //this data should be fetch from the DB
+  const [tasks, setTasks] = useState([]); 
+  
 
   const [newTask, setNewTask] = useState("");
   const sidebarRef = useRef(null);
@@ -37,15 +33,55 @@ const CheckList = () => {
     };
   }, [isSidebarOpen]);
 
-  const handleAddTask = () => {
+  // Fetch tasks from the backend
+  useEffect(() => {
+    
+    const fetchTasks = async () => {
+      const token = localStorage.getItem("token");
+      try {
+        const response = await axios.get("http://localhost:3000/checklistTasks" , {
+          headers: { Authorization: `Bearer ${token}` },
+        }); // Adjust the endpoint accordingly
+        setTasks(response.data.checklistTasks); // Access the checklistTasks property
+    console.log(response.data.checklistTasks);
+      } catch (error) {
+        console.error("Error fetching tasks:", error);
+      }
+    };
+
+    fetchTasks();
+  }, []);
+  
+
+  const handleAddTask = async () => {
+    const token = localStorage.getItem("token");
+    console.log(newTask.trim())
     if (newTask.trim()) {
-      setTasks((prevTasks) => [...prevTasks, newTask.trim()]);
-      setNewTask("");
+      try {
+        // Add the task to the backend
+        await axios.post("http://localhost:3000/checklistTasks", { task_name: newTask},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }); // Adjust the endpoint and payload
+        setTasks((prevTasks) => [...prevTasks, newTask.trim()]);
+        setNewTask("");
+      } catch (error) {
+        console.error("Error adding task:", error);
+      }
     }
   };
-
-  const handleDeleteTask = (index) => {
-    setTasks((prevTasks) => prevTasks.filter((_, i) => i !== index));
+  const handleDeleteTask = async (taskId) => {
+    const token = localStorage.getItem("token");
+    try {
+      await axios.delete(`http://localhost:3000/checklistTasks/`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setTasks(prevTasks => prevTasks.filter(task => task.id !== taskId));
+    } catch (error) {
+      console.error("Error deleting task:", error);
+    }
   };
 
   return (
@@ -82,12 +118,12 @@ const CheckList = () => {
           <input
             type="text"
             value={newTask}
-            onChange={(e) => setNewTask(e.target.value)} 
+            onChange={(e) => setNewTask(e.target.value)}
             placeholder="Entrer vos services suplementaire ..."
             className="w-[400px] h-[45px] p-[10px] gap-2 rounded-[5px] focus:outline-none shadow-[inset_0px_0px_4px_0px_rgba(0,0,0,0.25)]"
           />
           <button
-            onClick={handleAddTask} 
+            onClick={handleAddTask}
             className="text-main-brown font-semibold m-auto mt-5 leading-[30px]"
           >
             Add
@@ -98,7 +134,7 @@ const CheckList = () => {
             <div key={index} className="flex justify-between m-3">
               <p>{task}</p>
               <FaRegTrashAlt
-                onClick={() => handleDeleteTask(index)} 
+                onClick={() => handleDeleteTask(index)}
                 className="cursor-pointer text-red-600 hover:text-red-800"
               />
             </div>

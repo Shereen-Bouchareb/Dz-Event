@@ -129,15 +129,7 @@ const SignUpPrestataire = () => {
       service &&
       wilaya
     ) {
-      console.log("logging with name:", name);
-      console.log("logging with familyName:", familyName);
-      console.log("logging with email:", email);
-      console.log("logging with password:", password);
-      console.log("Remember me:", confirmPassword);
-      console.log("service:", service);
-      console.log("description:", description);
-      console.log("bio:", bio);
-      console.log("wilaya:", wilaya.value);
+      
       try {
         const response = await axios.post(
           "http://localhost:3000/api/signup/prestataire",

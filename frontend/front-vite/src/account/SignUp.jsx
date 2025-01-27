@@ -20,19 +20,7 @@ const SignUp = () => {
     if (!userRole) {
       setErrUserRole("required");
     }
-  
 
-    // try {f
-    //   const response = await axios.post(
-    //     " REACT_APP_API_BASE_URL/api/signup/client",
-    //     {role: userRole,}
-    //   );
-    //   if (response.status === 201) {
-    //     navigate(userRole === "Client" ? "/SignUpClient" : "/SignUpPrestataire");
-    //   }
-    // } catch (err) {
-    //   setApiError("Failed to register. Please try again.");
-    // }
     navigate(userRole === "Client" ? "/SignUpClient" : "/SignUpPrestataire");
     if (userRole) {
       console.log(userRole);
@@ -40,8 +28,6 @@ const SignUp = () => {
       clearForm();
     }
   };
-
-
 
   const clearForm = () => {
     setUserRole("");
@@ -95,9 +81,7 @@ const SignUp = () => {
           </div>
 
           <div className="flex   flex-col">
-          {apiError && (
-                <p className="text-red-500 text-xs">{apiError}</p>
-              )}
+            {apiError && <p className="text-red-500 text-xs">{apiError}</p>}
             <button
               type="submit"
               className=" bg-main-brown text-white text-center font-bold w-[400px] h-[50px]  p-[10px] mt-[30px] gap-2 rounded-[5px] focus:outline-none shadow-[inset_0px_0px_4px_0px_rgba(0,0,0,0.25)]"

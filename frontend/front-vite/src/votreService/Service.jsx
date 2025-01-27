@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import SideBar from "../ComponentsZ/SideBar";
 import { TiThMenu } from "react-icons/ti";
 import { FaRegTrashAlt } from "react-icons/fa";
+import axios from "axios";
 
 const Service = () => {
   // SIDEBAR SIDE START
@@ -32,27 +33,44 @@ const Service = () => {
   // SIDEBAR SIDE END
 
   // CONTENT SIDE START
-  const [ServiceData, SetServiceData] = useState([
-    {
-      title: "Event Photography",
-      description:
-        "Professional headshots, personal branding, and individual portrait sessions tailored to capture your unique personality.",
-      price: "500$",
-    },
-    {
-      title: "Portrait photography",
-      description:
-        "Professional headshots, personal branding, and individual portrait sessions tailored to capture your unique personality.",
-      price: "500$",
-    },
-  ]);
+  const [ServiceData, SetServiceData] = useState([]);
+
+  useEffect(() => {
+    const fetchServices = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const response = await axios.get("http://localhost:3000/services/", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        console.log(response);
+        SetServiceData(response.data.services);
+      } catch (error) {
+        console.error("Error fetching services:", error);
+      }
+    };
+
+    fetchServices();
+  }, []);
 
   const [isEditing, setIsEditing] = useState(false);
   const [currentService, setCurrentService] = useState(null);
 
-  const handleDeleteService = (index) => {
-    SetServiceData((prevService) => prevService.filter((_, i) => i !== index));
+  const handleDeleteService = async (index) => {
+    const serviceToDelete = ServiceData[index];
+  
+    try {
+      const token = localStorage.getItem("token");
+      await axios.delete(`http://localhost:3000/services/${serviceToDelete.service_id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+  
+      // Update state
+      SetServiceData((prevService) => prevService.filter((_, i) => i !== index));
+    } catch (error) {
+      console.error("Error deleting service:", error);
+    }
   };
+  
 
   const handleEditService = (index) => {
     setCurrentService({ ...ServiceData[index], index });
@@ -77,10 +95,10 @@ const Service = () => {
   // CONTENT SIDE END
 
   return (
-    <div className="h-screen flex relative">
+    <div className="h-screen flex relative  items-stretch">
       {/* SIDEBAR SIDE START */}
       <div
-        className="md:hidden text-main-brown m-[10px] cursor-pointer absolute"
+        className="md:hidden text-main-brown m-[10px] cursor-pointer  "
         onClick={toggleSidebar}
       >
         <TiThMenu size={50} />
@@ -102,7 +120,7 @@ const Service = () => {
       {/* SIDEBAR SIDE END */}
 
       {/* CONTENT SIDE */}
-      <div className="w-[100%] md:w-[70%] lg:w-[75%] h-screen flex flex-col">
+      <div className="w-[100%] md:w-[70%] lg:w-[75%] h-[100%] flex flex-col  ">
         <div className="m-auto flex flex-col justify-center items-center gap-3">
           {ServiceData.map((service, index) => (
             <div
@@ -116,9 +134,9 @@ const Service = () => {
                   </button>
                 </div>
                 <div className="text-text-brown font-semibold tracking-widest text-lg m-2 mt-0">
-                  {service.title}
+                  {service.service_name}
                 </div>
-                <div className="text-center m-4">{service.description}</div>
+                <div className="text-center m-4">{service.ser_description}</div>
                 <div className="flex justify-between text-sm">
                   <div className="text-text-brown text-sm p-2">
                     Starting at {service.price}
@@ -155,14 +173,14 @@ const Service = () => {
               <input
                 type="text"
                 name="title"
-                value={currentService.title}
+                value={currentService.service_name}
                 onChange={handleChange}
                 className="border p-2 rounded"
                 placeholder="Service Title"
               />
               <textarea
                 name="description"
-                value={currentService.description}
+                value={currentService.ser_description}
                 onChange={handleChange}
                 className="border p-2 rounded"
                 placeholder="Service Description"

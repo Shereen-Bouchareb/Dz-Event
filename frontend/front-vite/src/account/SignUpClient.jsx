@@ -16,6 +16,7 @@ const SignUpClient = () => {
   const [errEmail, setErrEmail] = useState("");
   const [errPassword, setErrPassword] = useState("");
   const [errConfirmPassword, setErrConfirmPassword] = useState("");
+  const [apiError, setApiError] = useState("");
 
   const handelNameChange = (e) => {
     setName(e.target.value);
@@ -53,7 +54,7 @@ const SignUpClient = () => {
     return password === confirmPassword;
   };
 
-  const handelSubmit = async(e) => {
+  const handelSubmit = async (e) => {
     e.preventDefault();
 
     if (!name) {
@@ -81,27 +82,8 @@ const SignUpClient = () => {
     if (!confirmPassword) {
       setErrConfirmPassword("please confirm your password ");
     }
-    if (!isPasswordMatch(password,confirmPassword)) {
+    if (!isPasswordMatch(password, confirmPassword)) {
       setErrConfirmPassword("password incorrect");
-    }
-    try {
-      const response = await axios.post(
-        "http://localhost:3000/api/signup/client",
-        {role: "Client",
-          firstName: name,
-          lastName: familyName,
-          email: email,
-          password: password
-        }
-      );
-      console.log("success")
-      if (response.status === 201){
-        
-        navigate("/SearchPage")
-      }
-      clearForm();
-    } catch (error) {
-      console.error("error signing up: ", error.response?.data || error.message);
     }
     if (
       name &&
@@ -111,24 +93,57 @@ const SignUpClient = () => {
       password &&
       passwordValidation(password) &&
       confirmPassword &&
-      isPasswordMatch(password,confirmPassword)
+      isPasswordMatch(password, confirmPassword)
     ) {
-      console.log("logging with name:", name);
-      console.log("logging with familyName:", familyName);
-      console.log("logging with email:", email);
-      console.log("logging with password:", password);
-      console.log("Remember me:", confirmPassword);
+      
+      try {
+        const response = await axios.post(
+          "http://localhost:3000/api/signup/client",
+          {
+            role: "Client",
+            firstName: name,
+            familyName: familyName,
+            email: email,
+            password: password,
+          },
+          console.log({
+            role: "Client",
+            firstName: name,
+            familyName: familyName,
+            email: email,
+            password: password,
+          })
+        );
+        if (response.status === 201) {
+          navigate("/SearchPage");
+        }
+      } catch (err) {
+        if (err.response && err.response.status === 400) {
+          setApiError(err.response.data.message || "Client already exists");
+        } else if (err.response) {
+          console.error("Error Response:", err.response.data);
+          setApiError(
+            err.response.data.message || "Failed to register. Please try again."
+          );
+        } else if (err.request) {
+          console.error("No Response:", err.request);
+          setApiError("No response from server. Please check your connection.");
+        } else {
+          console.error("Error:", err.message);
+          setApiError("An unexpected error occurred. Please try again.");
+        }
+        
+      }
       clearForm();
     }
   };
 
   const clearForm = () => {
-    setName("")
-    setFamilyName("")
+    setName("");
+    setFamilyName("");
     setEmail("");
     setPassword("");
-    setConfirmPassword("")
-    
+    setConfirmPassword("");
   };
 
   return (
@@ -138,8 +153,6 @@ const SignUpClient = () => {
       </div>
       <div className="bg-main-beige  h-screen flex justify-center items-center">
         <form
-          action=""
-          method=""
           className="flex justify-center items-center flex-col w-full h-full"
           onSubmit={handelSubmit}
         >
@@ -176,7 +189,9 @@ const SignUpClient = () => {
                 >
                   Family name <span className="text-red-600">*</span>
                 </label>
-                {errFamilyName && <p className="text-red-500 text-xs">{errFamilyName}</p>}
+                {errFamilyName && (
+                  <p className="text-red-500 text-xs">{errFamilyName}</p>
+                )}
               </div>
 
               <input
@@ -221,7 +236,9 @@ const SignUpClient = () => {
               >
                 Your Password <span className="text-red-600">*</span>
               </label>
-              {errPassword && <p className="text-red-500 text-xs">{errPassword}</p>}
+              {errPassword && (
+                <p className="text-red-500 text-xs">{errPassword}</p>
+              )}
             </div>
 
             <input
@@ -248,7 +265,9 @@ const SignUpClient = () => {
               >
                 Re-confirm your password <span className="text-red-600">*</span>
               </label>
-              {errConfirmPassword && <p className="text-red-500 text-xs">{errConfirmPassword}</p>}
+              {errConfirmPassword && (
+                <p className="text-red-500 text-xs">{errConfirmPassword}</p>
+              )}
             </div>
             <input
               id="passwordConfirm"
@@ -262,22 +281,21 @@ const SignUpClient = () => {
             />
           </div>
 
-          <div className="flex   flex-col">
-          <Link > 
+          <div className="flex   flex-col mt-[30px]">
+          {apiError && (
+                <p className="text-red-500 text-xs">{apiError}</p>
+              )}
             <button
               type="submit"
-              className=" bg-main-brown text-white text-center font-bold w-[400px] h-[50px]  p-[10px] mt-[30px] gap-2 rounded-[5px] focus:outline-none shadow-[inset_0px_0px_4px_0px_rgba(0,0,0,0.25)]"
+              className=" bg-main-brown text-white text-center font-bold w-[400px] h-[50px]  p-[10px]  gap-2 rounded-[5px] focus:outline-none shadow-[inset_0px_0px_4px_0px_rgba(0,0,0,0.25)]"
             >
               Sign Up
             </button>
-            </Link>
-           <Link to="/Login">
-            <a
-              href=""
-              className="text-main-brown text-[12px] font-medium text-center"
-            >
-              Already have an account?
-            </a>
+
+            <Link to="/LogIn">
+              <div className="text-main-brown text-[12px] font-medium text-center">
+                Already have an account?
+              </div>
             </Link>
           </div>
         </form>
