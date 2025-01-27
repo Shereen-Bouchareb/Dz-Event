@@ -1,4 +1,5 @@
 import { NavLink } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import logo from "../../public/logoDzEvent.png";
 import { IoPersonOutline } from "react-icons/io5";
 import { SlCalender } from "react-icons/sl";
@@ -10,6 +11,11 @@ import Translation from "./Translation";
 import { useTranslation } from "react-i18next";
 
 const SideBar = () => {
+  const navigate = useNavigate()
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/login");
+  };
   const { t } = useTranslation();
   return (
     <div className="bg-main-beige h-screen relative">
@@ -92,7 +98,7 @@ const SideBar = () => {
       </div>
       <div className="absolute bottom-0 flex text-main-brown    mt-[75px]  p-[15px] w-full hover:bg-secondary-beige border-t border-main-grey">
         <IoMdLogOut size={20} />
-        <p className="ml-[20px]">Log Out</p>
+        <p className="ml-[20px]" onClick={handleLogout}>Log Out</p>
       </div>
     </div>
   );
