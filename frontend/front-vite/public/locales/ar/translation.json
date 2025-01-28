@@ -3,7 +3,7 @@
     "Votre Service": "عروضك ",
     "ajouter une photo": "اضف صورة",
     "First name": "الاسم",
-    "Family name ": "اللقب",
+    "Family name": "اللقب",
     "Your Email-Adress": "بريدك الالكتروني",
     "Your Password": "رقمك السري",
     "Re-confirm your password": "اكد رقمك السري",
@@ -14,5 +14,7 @@
     "Demande de reservation": "طلبيات الحجز",
     "Les Avis": "الاراء",
     "Votre checklist": "قائمة المراجعة",
-    "Log Out":"تسجيل الخروج"
+    "Log Out":"تسجيل الخروج",
+    "Sign Up":"تسجيل",
+    "Already have an account?":"?تملك حسابا"
   }

@@ -11,12 +11,13 @@ import Translation from "./Translation";
 import { useTranslation } from "react-i18next";
 
 const SideBar = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate()
   const handleLogout = () => {
     localStorage.removeItem("token");
     navigate("/login");
   };
-  const { t } = useTranslation();
+  
   return (
     <div className="bg-main-beige h-screen relative">
       <div className="p-[50px] pl-0 pt-[10px] ml-[30px] w-[80%] text-center">
@@ -77,7 +78,7 @@ const SideBar = () => {
           >
             <div className="flex text-main-brown font-semibold m-[10px] p-[15px] ml-0  pl-[25px] w-full hover:bg-secondary-beige">
               <TbChecklist size={20} />
-              <p className="ml-[20px]">{t(`Votre Service `)}</p>
+              <p className="ml-[20px]"> {t(`Votre Service`)}</p>
             </div>
           </NavLink>
           <NavLink
@@ -98,7 +99,7 @@ const SideBar = () => {
       </div>
       <div className="absolute bottom-0 flex text-main-brown    mt-[100px]  p-[15px] w-full hover:bg-secondary-beige border-t border-main-grey">
         <IoMdLogOut size={20} />
-        <p className="ml-[20px]" onClick={handleLogout}>Log Out</p>
+        <p className="ml-[20px]" onClick={handleLogout}>{t(`Log Out`)}</p>
       </div>
     </div>
   );

@@ -3,8 +3,10 @@ import { useNavigate } from "react-router-dom";
 import Account from "../assets/Account.png";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { useTranslation } from "react-i18next";
 
 const SignUpClient = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [name, setName] = useState("");
   const [familyName, setFamilyName] = useState("");
@@ -95,7 +97,6 @@ const SignUpClient = () => {
       confirmPassword &&
       isPasswordMatch(password, confirmPassword)
     ) {
-      
       try {
         const response = await axios.post(
           "http://localhost:3000/api/signup/client",
@@ -132,7 +133,6 @@ const SignUpClient = () => {
           console.error("Error:", err.message);
           setApiError("An unexpected error occurred. Please try again.");
         }
-        
       }
       clearForm();
     }
@@ -166,7 +166,8 @@ const SignUpClient = () => {
                   htmlFor="name"
                   className="  text-[15px] font-medium leading-[30px] mr-3"
                 >
-                  First name <span className="text-red-600">*</span>
+                  {t(`First name`)}
+                  <span className="text-red-600">*</span>
                 </label>
                 {errName && <p className="text-red-500 text-xs">{errName}</p>}
               </div>
@@ -187,7 +188,7 @@ const SignUpClient = () => {
                   htmlFor="familyName"
                   className="  text-[15px] font-medium leading-[30px] mr-3"
                 >
-                  Family name <span className="text-red-600">*</span>
+                   {t(`Family name`)} <span className="text-red-600">*</span>
                 </label>
                 {errFamilyName && (
                   <p className="text-red-500 text-xs">{errFamilyName}</p>
@@ -211,7 +212,7 @@ const SignUpClient = () => {
                 htmlFor="email"
                 className="  text-[15px] font-medium leading-[30px] mr-3"
               >
-                Your Email-Adress <span className="text-red-600">*</span>
+                 {t(`Your Email-Adress`)}<span className="text-red-600">*</span>
               </label>
               {errEmail && <p className="text-red-500 text-xs">{errEmail}</p>}
             </div>
@@ -234,7 +235,7 @@ const SignUpClient = () => {
                 htmlFor="password"
                 className="  text-[15px] font-medium leading-[30px] mr-3 "
               >
-                Your Password <span className="text-red-600">*</span>
+                 {t(`Your Password`)}<span className="text-red-600">*</span>
               </label>
               {errPassword && (
                 <p className="text-red-500 text-xs">{errPassword}</p>
@@ -253,7 +254,7 @@ const SignUpClient = () => {
             />
             <div className="flex justify-between items-center mt-1">
               <p className="text-main-grey text-xs ">
-                must contains letters, numbers and special caracters.
+                {t(`must contains letters, numbers and special caracters.`)} 
               </p>
             </div>
           </div>
@@ -263,7 +264,7 @@ const SignUpClient = () => {
                 htmlFor="passwordConfirm"
                 className="  text-[15px] font-medium leading-[30px] mr-3 "
               >
-                Re-confirm your password <span className="text-red-600">*</span>
+                 {t(`Re-confirm your password`)}<span className="text-red-600">*</span>
               </label>
               {errConfirmPassword && (
                 <p className="text-red-500 text-xs">{errConfirmPassword}</p>
@@ -282,19 +283,17 @@ const SignUpClient = () => {
           </div>
 
           <div className="flex   flex-col mt-[30px]">
-          {apiError && (
-                <p className="text-red-500 text-xs">{apiError}</p>
-              )}
+            {apiError && <p className="text-red-500 text-xs">{apiError}</p>}
             <button
               type="submit"
               className=" bg-main-brown text-white text-center font-bold w-[400px] h-[50px]  p-[10px]  gap-2 rounded-[5px] focus:outline-none shadow-[inset_0px_0px_4px_0px_rgba(0,0,0,0.25)]"
             >
-              Sign Up
+              {t(`Sign Up`)}
             </button>
 
             <Link to="/LogIn">
               <div className="text-main-brown text-[12px] font-medium text-center">
-                Already have an account?
+                {t(`Already have an account?`)}
               </div>
             </Link>
           </div>

@@ -7,9 +7,11 @@ import anonymeProfile from "../assets/anonymeProfile.png";
 import galleryMen from "../assets/galleryMen.png"
 import galleryWedding from "../assets/galleryWedding.png"
 import galleryWomen from "../assets/GalleryWomen.png"
+import { useTranslation } from "react-i18next";
 
 
 const Profile = () => {
+  const { t } = useTranslation();
   // SIDEBAR START
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const sidebarRef = useRef(null);
@@ -115,10 +117,10 @@ const Profile = () => {
         <div>
           <div className="flex ">
             <h1 className="text-main-brown font-semibold p-[15px] m-5 mr-0">
-              Votre Galerie :
+            {t(`Votre Galerie`)}: 
             </h1>
             <button className="text-main-brown bg-main-beige font-semibold p-[15px] m-5 ml-3 rounded-3xl relative ">
-              ajouter une photo
+               {t(`ajouter une photo`)}
               <input
               type="file"
               id="addPicture"

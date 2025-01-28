@@ -5,8 +5,10 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import Select from "react-select";
 import WilayasData from "../Profile/Wilayas.json";
+import { useTranslation } from "react-i18next";
 
 const SignUpPrestataire = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [name, setName] = useState("");
   const [familyName, setFamilyName] = useState("");
@@ -199,7 +201,7 @@ const SignUpPrestataire = () => {
                   htmlFor="name"
                   className="  text-[15px] font-medium  mr-3"
                 >
-                  First name <span className="text-red-600">*</span>
+                   {t(`First name`)}<span className="text-red-600">*</span>
                 </label>
                 {errName && <p className="text-red-500 text-xs">{errName}</p>}
               </div>
@@ -220,7 +222,7 @@ const SignUpPrestataire = () => {
                   htmlFor="familyName"
                   className="  text-[15px] font-medium  mr-3"
                 >
-                  Family name <span className="text-red-600">*</span>
+                    {t(`Family name`)}<span className="text-red-600">*</span>
                 </label>
                 {errFamilyName && (
                   <p className="text-red-500 text-xs">{errFamilyName}</p>
@@ -244,7 +246,7 @@ const SignUpPrestataire = () => {
                 htmlFor="email"
                 className="  text-[15px] font-medium  mr-3"
               >
-                Your Email-Adress <span className="text-red-600">*</span>
+                 {t(`Your Email-Adress`)}<span className="text-red-600">*</span>
               </label>
               {errEmail && <p className="text-red-500 text-xs">{errEmail}</p>}
             </div>
@@ -291,7 +293,7 @@ const SignUpPrestataire = () => {
                 htmlFor="password"
                 className="  text-[15px] font-medium  mr-3 "
               >
-                Your Password <span className="text-red-600">*</span>
+                 {t(`Your Password`)}<span className="text-red-600">*</span>
               </label>
               {errPassword && (
                 <p className="text-red-500 text-xs">{errPassword}</p>
@@ -310,7 +312,7 @@ const SignUpPrestataire = () => {
             />
             <div className="flex justify-between items-center mt-1">
               <p className="text-main-grey text-xs ">
-                must contains letters, numbers and special caracters.
+              {t(`must contains letters, numbers and special caracters.`)}
               </p>
             </div>
           </div>
@@ -320,7 +322,7 @@ const SignUpPrestataire = () => {
                 htmlFor="passwordConfirm"
                 className="  text-[15px] font-medium mr-3 "
               >
-                Re-confirm your password <span className="text-red-600">*</span>
+                {t(`Re-confirm your password`)} <span className="text-red-600">*</span>
               </label>
               {errConfirmPassword && (
                 <p className="text-red-500 text-xs">{errConfirmPassword}</p>
@@ -343,7 +345,7 @@ const SignUpPrestataire = () => {
                 htmlFor="typeUser"
                 className="  text-[15px] font-medium  mr-3"
               >
-                Votre Service <span className="text-red-600">*</span>
+                {t(`Votre Service`)} <span className="text-red-600">*</span>
               </label>
               {errService && (
                 <p className="text-red-500 text-xs">{errService}</p>
