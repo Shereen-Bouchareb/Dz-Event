@@ -99,7 +99,7 @@ const SignUpClient = () => {
     ) {
       try {
         const response = await axios.post(
-          "http://localhost:3000/api/signup/client",
+          "https://dz-event-1-rsgd.onrender.com/api/signup/client",
           {
             role: "Client",
             firstName: name,

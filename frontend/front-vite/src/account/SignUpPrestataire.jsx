@@ -134,7 +134,7 @@ const SignUpPrestataire = () => {
       
       try {
         const response = await axios.post(
-          "http://localhost:3000/api/signup/prestataire",
+          "https://dz-event-1-rsgd.onrender.com/api/signup/prestataire",
           {
             firstname: name,
             familyname: familyName,

@@ -67,7 +67,7 @@ const LogIn = () => {
 
       try {
         const response = await axios.post(
-          "http://localhost:3000/api/login",
+          "https://dz-event-1-rsgd.onrender.com/api/login",
           {
             email,
             password,

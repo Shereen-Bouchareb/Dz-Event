@@ -21,7 +21,7 @@ export default function DetailedProfile() {
           return;
         }
 
-        const response = await fetch(`http://localhost:3000/prestataires/${id}`, {
+        const response = await fetch(`https://dz-event-1-rsgd.onrender.com/prestataires/${id}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',

@@ -36,7 +36,7 @@ const CheckList = () => {
     const fetchTasks = async () => {
       const token = localStorage.getItem("token");
       try {
-        const response = await axios.get("http://localhost:3000/checklistTasks", {
+        const response = await axios.get("https://dz-event-1-rsgd.onrender.com/checklistTasks", {
           headers: { Authorization: `Bearer ${token}` },
         });
         // Log the response to see the data structure
@@ -55,7 +55,7 @@ const CheckList = () => {
     if (newTask.trim()) {
       try {
         const response = await axios.post(
-          "http://localhost:3000/checklistTasks",
+          "https://dz-event-1-rsgd.onrender.com/checklistTasks",
           { task_name: newTask.trim() },
           {
             headers: {
@@ -67,7 +67,7 @@ const CheckList = () => {
         console.log("Add task response:", response.data);
         
         // Fetch tasks again after adding new task
-        const fetchResponse = await axios.get("http://localhost:3000/checklistTasks", {
+        const fetchResponse = await axios.get("https://dz-event-1-rsgd.onrender.com/checklistTasks", {
           headers: { Authorization: `Bearer ${token}` },
         });
         setTasks(fetchResponse.data.checklistTasks || []);

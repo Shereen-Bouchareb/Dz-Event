@@ -58,7 +58,7 @@ function Comments() {
 useEffect(()=> {
     const fetchProduct = async () => {
         try {
-            const response = await fetch("http://localhost:3000/prestataires/1/comments"); ///endpoint here
+            const response = await fetch("https://dz-event-1-rsgd.onrender.com/prestataires/1/comments"); ///endpoint here
             const responseData = await response.json();
             if (response.ok) {
                 console.log(responseData.comments)

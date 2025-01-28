@@ -61,7 +61,7 @@ function SearchPrest() {
         console.error("No token found. Please log in.");
         return; // Exit the function if no token is found
       }
-       const response = await fetch('http://localhost:3000/prestataires', {
+       const response = await fetch('https://dz-event-1-rsgd.onrender.com/prestataires', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
