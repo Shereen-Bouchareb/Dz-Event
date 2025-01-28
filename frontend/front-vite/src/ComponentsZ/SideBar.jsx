@@ -96,7 +96,7 @@ const SideBar = () => {
       <div >
         <Translation />
       </div>
-      <div className="absolute bottom-0 flex text-main-brown    mt-[75px]  p-[15px] w-full hover:bg-secondary-beige border-t border-main-grey">
+      <div className="absolute bottom-0 flex text-main-brown    mt-[100px]  p-[15px] w-full hover:bg-secondary-beige border-t border-main-grey">
         <IoMdLogOut size={20} />
         <p className="ml-[20px]" onClick={handleLogout}>Log Out</p>
       </div>
